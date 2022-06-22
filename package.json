@@ -1,0 +1,32 @@
+{
+  "name": "twitch-bot",
+  "version": "1.0.1",
+  "description": "I am a twitch bot example on Glitch by shindakun",
+  "main": "index.js",
+  "scripts": {
+    "start": "node botNL.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.18.1",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.2.6",
+    "request": "^2.88.2",
+    "tmi.js": "^1.8.5",
+    "body-parser": "1.20.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": "14.X"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/twitch-bot"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express",
+    "twitch.tv"
+  ]
+}

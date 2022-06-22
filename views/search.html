@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+  </style>
+  <body>
+    <div>
+      <label>死亡查詢名單</label>
+      <input type="text" name="twitchId" id="twitchId" />
+      <button onclick="myFunction()">查詢</button>
+    </div>
+    <div style="margin-top: 20px">
+      <label id="demo">查詢結果：</label>
+    </div>
+
+    <div style="margin-top: 20px">
+      <label>查詢歷史</label>
+<!--       <button style="margin-left:20px" onclick="research()">重新查詢</button>
+      <button style="margin-left:20px" onclick="clear()">清除</button> -->
+      <table id="myTable">
+        <thead>
+          <tr>
+            <td>查詢時間</td>
+            <td>Twitch Id</td>
+            <td>查詢結果</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script src="search.js"></script>
+  </body>
+</html>
