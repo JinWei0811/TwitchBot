@@ -20,8 +20,8 @@ let options = {
         reconnect: true,
     },
     identity: {
-        username: env.USERNAME2,
-        password: env.PASSWORD2,
+        username: 'nl_transfer',
+        password: 'oauth:psmra3k4hb975u7nlurvj7dhianxtp',
     },
     channels: ["never_loses"],
 };
