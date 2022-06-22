@@ -41,7 +41,7 @@ app.get("/search", function (request, response) {
     })
         .then((response) => response.json())
         .then((result) => {
-            if (result.data.length == 0) {
+            if (result.data?.length == 0) {
                 let resp = { result: "查無此人" };
                 response.send(resp);
             } else {
