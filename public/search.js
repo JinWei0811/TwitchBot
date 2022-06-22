@@ -4,7 +4,7 @@ function myFunction() {
   var twitchId = document.getElementById("twitchId").value;
 
   fetch(
-    `https://twitcbot850811.herokuapp.com//search?twitchId=${twitchId}`
+    `https://twitcbot850811.herokuapp.com/search?twitchId=${twitchId}`
   )
     .then((response) => response.json())
     .then((result) => {
@@ -30,7 +30,7 @@ function research() {
   let newRecordList = [];
   for (let i = 0; i < recordList.length; i++) {
     fetch(
-      `https://twitcbot850811.herokuapp.com//search?twitchId=${recordList[i].twitchId}`
+      `https://twitcbot850811.herokuapp.com/search?twitchId=${recordList[i].twitchId}`
     )
       .then((response) => response.json())
       .then((result) => {
