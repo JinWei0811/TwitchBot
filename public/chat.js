@@ -19,7 +19,7 @@ function myFunction() {
     grab.value = "";
   }
 
-  fetch(`https://caterwauling-aboard-tick.glitch.me/chat`, {
+  fetch(`https://twitcbot850811.herokuapp.com//chat`, {
     method: "POST",
     headers: myHeaders,
     mode: "cors",

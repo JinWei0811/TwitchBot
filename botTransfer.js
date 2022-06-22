@@ -77,7 +77,7 @@ app.post("/chat", function (request, response) {
 });
 
 setInterval(() => {
-    fetch("https://caterwauling-aboard-tick.glitch.me/wakeup", {
+    fetch("https://twitcbot850811.herokuapp.com//wakeup", {
         method: "GET",
     });
 }, 180000);
