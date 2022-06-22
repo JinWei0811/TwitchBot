@@ -6,8 +6,8 @@ import fetch from "node-fetch";
 
 const app = express();
 let headers = {
-    Authorization: process.env.Authorization,
-    "Client-Id": process.env.ClientId,
+  Authorization: process.env.Authorization,
+  "Client-Id": process.env.ClientId,
 };
 
 let options = {
@@ -20,18 +20,14 @@ let options = {
         reconnect: true,
     },
     identity: {
-        username: process.env.USERNAME2,
-        password: process.env.PASSWORD2,
+        username: env.USERNAME2,
+        password: env.PASSWORD2,
     },
     channels: ["never_loses"],
 };
 
 let client = new tmi.client(options);
 client.connect();
-client.on("message", async (channel, tags, message, self) => {
-    // Ignore echoed messages.
-    if (self) return;
-});
 
 const listener = app.listen(process.env.PORT, function () { });
 
