@@ -8,6 +8,7 @@ function myFunction() {
   )
     .then((response) => response.json())
     .then((result) => {
+      console.log(result);
       document.getElementById("demo").innerHTML = "查詢結果：" + result.result;
 
       let date = new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" });

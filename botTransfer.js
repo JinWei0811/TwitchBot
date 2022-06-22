@@ -33,8 +33,6 @@ const listener = app.listen(process.env.PORT, function () { });
 
 app.get("/search", function (request, response) {
     let twitchId = request.query.twitchId;
-    console.log(twitchId);
-    console.log(request);
     fetch(`https://api.twitch.tv/helix/users?login=${twitchId}`, {
         method: "GET",
         headers: headers,
