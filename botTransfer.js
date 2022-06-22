@@ -33,6 +33,7 @@ const listener = app.listen(process.env.PORT, function () { });
 
 app.get("/search", function (request, response) {
     let twitchId = request.query.twitchId;
+    console.log(__dirname);
     fetch(`https://api.twitch.tv/helix/users?login=${twitchId}`, {
         method: "GET",
         headers: headers,
@@ -49,8 +50,8 @@ app.get("/search", function (request, response) {
         });
 });
 
-app.use(express.static(__dirname + '/public'));
-// app.use(express.static("/public"));
+// app.use(express.static(__dirname + '/public'));
+app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     // to support URL-encoded bodies
@@ -59,11 +60,11 @@ app.use(bodyParser.urlencoded({
 );
 
 app.get("/search.html", function (request, response) {
-    response.sendFile(__dirname + "views/search.html", { root: "." });
+    response.sendFile("views/search.html", { root: "." });
 });
 
 app.get("/chat.html", function (request, response) {
-    response.sendFile(__dirname + "views/chat.html", { root: "." });
+    response.sendFile("views/chat.html", { root: "." });
 });
 
 app.get("/wakeup", function (request, response) {
