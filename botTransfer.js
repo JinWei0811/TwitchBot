@@ -59,11 +59,11 @@ app.use(bodyParser.urlencoded({
 );
 
 app.get("/search.html", function (request, response) {
-    response.sendFile("views/search.html", { root: "." });
+    response.sendFile(__dirname + "views/search.html", { root: "." });
 });
 
 app.get("/chat.html", function (request, response) {
-    response.sendFile("views/chat.html", { root: "." });
+    response.sendFile(__dirname + "views/chat.html", { root: "." });
 });
 
 app.get("/wakeup", function (request, response) {
