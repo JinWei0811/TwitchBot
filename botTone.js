@@ -70,7 +70,7 @@ client.on("message", async (channel, tags, message, self) => {
   }
 
   if (message.includes("!富邦") && canDo) {
-    talkSomething(channel, `富邦悍將 We will win GivePLZ`);
+    talkSomething(`夠臭我才舔 黑let‘s go 富邦的P眼 反正超強GG 無所畏懼 大師兄都say YEAH HungryPaimon`);
   }
 
   if (message.includes("!有驚無險") && canDo) {
