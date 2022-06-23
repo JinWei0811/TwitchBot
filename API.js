@@ -140,7 +140,7 @@ function fetchMLB() {
 
 function fetchMLBGame(api) {
     return new Promise((resolve, reject) => {
-        fetch(`http://statsapi.mlb.com${item.link}`, {
+        fetch(`http://statsapi.mlb.com${api}`, {
             method: "GET",
         })
             .then((response) => response.json())

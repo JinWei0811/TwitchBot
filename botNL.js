@@ -232,7 +232,6 @@ client.on("message", async (channel, tags, message, self) => {
         item.teams.home.team.id === teamId ||
         item.teams.away.team.id === teamId
       ) {
-        console.log(item);
         let homeTeam = MLB.find(
           (v) => v.teamId === item.teams.home.team.id
         ).teamCH;
@@ -253,7 +252,7 @@ client.on("message", async (channel, tags, message, self) => {
           status = "比賽進行中";
           let game_info = await fetchMLBGame(item.link);
           currentInning = game_info.liveData.linescore.currentInning;
-          homeScore = item.team.home.score;
+          homeScore = item.teams.home.score;
           awayScore = item.teams.away.score;
           switch (game_info.liveData.linescore.inningState) {
             case "Bottom":
