@@ -248,6 +248,8 @@ client.on("message", async (channel, tags, message, self) => {
           item.status.codedGameState === "O"
         ) {
           status = "比賽結束";
+          homeScore = item.teams.home.score;
+          awayScore = item.teams.away.score;
         } else if (item.status.codedGameState === "I") {
           status = "比賽進行中";
           let game_info = await fetchMLBGame(item.link);
