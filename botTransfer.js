@@ -6,8 +6,8 @@ import fetch from "node-fetch";
 
 const app = express();
 let headers = {
-  Authorization: process.env.Authorization,
-  "Client-Id": process.env.ClientId,
+    Authorization: process.env.Authorization,
+    "Client-Id": process.env.ClientId,
 };
 
 let options = {
@@ -20,8 +20,8 @@ let options = {
         reconnect: true,
     },
     identity: {
-        username: 'nl_transfer',
-        password: 'oauth:psmra3k4hb975u7nlurvj7dhianxtp',
+        username: process.env.USERNAME2,
+        password: process.env.PASSWORD2,
     },
     channels: ["never_loses"],
 };

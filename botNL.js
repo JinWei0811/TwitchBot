@@ -37,8 +37,8 @@ let streamerList = [
 const client = new tmi.Client({
   options: { debug: true },
   identity: {
-    username: "raccattack_bot",
-    password: "oauth:yek0n2mdwsg9j9wtwvo31480v4wdhj",
+    username: process.env.USERNAME1,
+    password: process.env.PASSWORD1,
   },
   channels: ["never_loses"],
 });

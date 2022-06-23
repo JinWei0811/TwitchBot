@@ -36,8 +36,8 @@ let streamerList = [
 const client = new tmi.Client({
   options: { debug: true },
   identity: {
-    username: "f92175bot",
-    password: "oauth:y3fgik4mkrrivct5z8gxxjao8c0jks",
+    username: process.env.USERNAME3,
+    password: process.env.PASSWORD3,
   },
   channels: ["asiagodtonegg3be0"],
 });
@@ -96,11 +96,9 @@ client.on("message", async (channel, tags, message, self) => {
     if (_.isEmpty(covidResult)) {
       talkResult = `@${chanName}, 今日人數尚未公布。  資料來源:衛福部疾管署新聞稿 RaccAttack`;
     } else {
-      talkResult = `@${chanName}, 感謝時中部長 ThankEgg  ${
-        covidResult.date.getMonth() + 1
-      }/${covidResult.date.getDate()} ${
-        covidResult.title
-      }。 資料來源:衛福部疾管署新聞稿`;
+      talkResult = `@${chanName}, 感謝時中部長 ThankEgg  ${covidResult.date.getMonth() + 1
+        }/${covidResult.date.getDate()} ${covidResult.title
+        }。 資料來源:衛福部疾管署新聞稿`;
     }
     talkSomething(talkResult);
   }
@@ -127,19 +125,16 @@ client.on("message", async (channel, tags, message, self) => {
     }
     switch (stock[0].changeStatus) {
       case "equal":
-        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟡 有驚無險 GivePLZ ${
-          stock[0].symbolName
-        } 平盤 ${stock[0].price}元, 白忙一場`;
+        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟡 有驚無險 GivePLZ ${stock[0].symbolName
+          } 平盤 ${stock[0].price}元, 白忙一場`;
         break;
       case "down":
-        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟢 逢低加碼 SwiftRage ${
-          stock[0].symbolName
-        } ${stock[0].change} 跌到 ${stock[0].price}元 PoroSad`;
+        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟢 逢低加碼 SwiftRage ${stock[0].symbolName
+          } ${stock[0].change} 跌到 ${stock[0].price}元 PoroSad`;
         break;
       case "up":
-        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🔴 有驚無險 GivePLZ ${
-          stock[0].symbolName
-        } ${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
+        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🔴 有驚無險 GivePLZ ${stock[0].symbolName
+          } ${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
         break;
     }
     talkSomething(talkResult);
@@ -170,9 +165,8 @@ client.on("message", async (channel, tags, message, self) => {
       return;
     }
     let follow_date = new Date(follow_info.data[0].followed_at);
-    talkResult = `@${chanName} 您從${follow_date.getFullYear()}年${
-      follow_date.getMonth() + 1
-    }月${follow_date.getDate()}日開始追隨${to_name}`;
+    talkResult = `@${chanName} 您從${follow_date.getFullYear()}年${follow_date.getMonth() + 1
+      }月${follow_date.getDate()}日開始追隨${to_name}`;
     talkSomething(talkResult);
   }
 
