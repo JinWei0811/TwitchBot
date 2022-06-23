@@ -40,7 +40,7 @@ const client = new tmi.Client({
     username: "raccattack_bot",
     password: "oauth:yek0n2mdwsg9j9wtwvo31480v4wdhj",
   },
-  channels: ["raccattack850811"],
+  channels: ["never_loses"],
 });
 
 client.connect();
