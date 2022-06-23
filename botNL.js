@@ -187,7 +187,6 @@ client.on("message", async (channel, tags, message, self) => {
     let games = NBA_info.scoreboard.games;
     let talkResult = "";
     for (let item of games) {
-      console.log(item);
       if (item.gameCode.includes(team_code)) {
         let homeTeam = NBA.find(
           (v) => v.teamEN == item.homeTeam.teamTricode
@@ -233,6 +232,7 @@ client.on("message", async (channel, tags, message, self) => {
         item.teams.home.team.id === teamId ||
         item.teams.away.team.id === teamId
       ) {
+        console.log(item);
         let homeTeam = MLB.find(
           (v) => v.teamId === item.teams.home.team.id
         ).teamCH;
