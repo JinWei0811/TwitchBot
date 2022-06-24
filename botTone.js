@@ -267,11 +267,13 @@ client.on("message", async (channel, tags, message, self) => {
           item.status.codedGameState === "O"
         ) {
           status = "比賽結束";
+          homeScore = item.teams.home.score;
+          awayScore = item.teams.away.score;
         } else if (item.status.codedGameState === "I") {
           status = "比賽進行中";
           let game_info = await fetchMLBGame(item.link);
           currentInning = game_info.liveData.linescore.currentInning;
-          homeScore = item.team.home.score;
+          homeScore = item.teams.home.score;
           awayScore = item.teams.away.score;
           switch (game_info.liveData.linescore.inningState) {
             case "Bottom":
@@ -317,7 +319,7 @@ client.on("message", async (channel, tags, message, self) => {
           nowDate.getSeconds() > 9
             ? nowDate.getSeconds()
             : `0${nowDate.getSeconds()}`;
-        talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${status}${currentInning} ${state} ${homeTeam} ${item.teams.home.score} : ${awayTeam} ${item.teams.away.score}`;
+        talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${status}${currentInning} ${state} ${homeTeam} ${homeScore} : ${awayTeam} ${awayScore}`;
         talkSomething(talkResult);
       }
     }
