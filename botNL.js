@@ -57,7 +57,7 @@ client.on("message", async (channel, tags, message, self) => {
     let date = new Date(
       new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
     );
-    console.log(date);
+    canDo = false;
     talkSomething(`@${chanName}, 有驚無險，又到${date.getHours()}點 GivePLZ`);
   }
 
@@ -81,6 +81,7 @@ client.on("message", async (channel, tags, message, self) => {
         }/${covidResult.date.getDate()} ${covidResult.title
         }。 資料來源:衛福部疾管署新聞稿`;
     }
+    canDo = false;
     talkSomething(talkResult);
   }
 
@@ -89,6 +90,7 @@ client.on("message", async (channel, tags, message, self) => {
     let talkResult = "";
     if (_.isNil(stock_list)) {
       talkResult = `@${chanName}, 查無股票代碼`;
+      canDo = false;
       talkSomething(talkResult);
     }
     let stock_id = stock_list[0];
@@ -101,6 +103,7 @@ client.on("message", async (channel, tags, message, self) => {
     }
     if (_.isEmpty(stock)) {
       talkResult = `@${chanName}, 查無此檔股票`;
+      canDo = false;
       talkSomething(talkResult);
       return;
     }
@@ -118,6 +121,7 @@ client.on("message", async (channel, tags, message, self) => {
           } ${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
         break;
     }
+    canDo = false;
     talkSomething(talkResult);
   }
 
@@ -142,12 +146,14 @@ client.on("message", async (channel, tags, message, self) => {
     let follow_info = await getFollowTime(from_id, to_id);
     if (follow_info.total === 0) {
       talkResult = `@${chanName} 你沒有追隨${to_name} cmonBruh`;
+      canDo = false;
       talkSomething(talkResult);
       return;
     }
     let follow_date = new Date(follow_info.data[0].followed_at);
     talkResult = `@${chanName} 您從${follow_date.getFullYear()}年${follow_date.getMonth() + 1
       }月${follow_date.getDate()}日開始追隨${to_name}`;
+    canDo = false;
     talkSomething(talkResult);
   }
 
@@ -160,6 +166,7 @@ client.on("message", async (channel, tags, message, self) => {
     let user_info = await checkUId(user_name);
     if (user_info.data.length === 0) {
       talkResult = `MrDestructoid @${chanName}, 查無 ${user_name} 此人`;
+      canDo = false;
       talkSomething(talkResult);
       return;
     }
@@ -176,6 +183,7 @@ client.on("message", async (channel, tags, message, self) => {
       }
     }
     talkResult = `@${chanName} ${response}`;
+    canDo = false;
     talkSomething(talkResult);
   }
 
@@ -214,6 +222,7 @@ client.on("message", async (channel, tags, message, self) => {
             gameStatus = statusText.replace(statusReg, statusCH);
           }
           talkResult = `@${chanName}, ${gameStatus}  ${homeTeam} ${homeScore} ： ${awayTeam} ${awayScore} `;
+          canDo = false;
           talkSomething(talkResult);
         }
       }
@@ -305,7 +314,7 @@ client.on("message", async (channel, tags, message, self) => {
             ? nowDate.getSeconds()
             : `0${nowDate.getSeconds()}`;
         talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${status}${currentInning} ${state} ${homeTeam} ${homeScore} : ${awayTeam} ${awayScore}`;
-        console.log(talkResult);
+        canDo = false;
         talkSomething(talkResult);
       }
     }
@@ -313,7 +322,6 @@ client.on("message", async (channel, tags, message, self) => {
 
   function talkSomething(result) {
     client.say(channel, result);
-    canDo = false;
     setTimeout(function () {
       canDo = true;
     }, 1200);
