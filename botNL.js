@@ -32,6 +32,10 @@ let streamerList = [
     name: "依渟",
     value: "117348035",
   },
+  {
+    name: '小熊',
+    value: '57775220'
+  }
 ];
 
 const client = new tmi.Client({
