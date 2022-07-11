@@ -81,7 +81,7 @@ client.on("message", async (channel, tags, message, self) => {
     if (_.isEmpty(covidResult)) {
       talkResult = `@${chanName}, 今日人數尚未公布。  資料來源:衛福部疾管署新聞稿 RaccAttack`;
     } else {
-      talkResult = `@${chanName}, 感謝時中部長 ThankEgg  ${covidResult.date.getMonth() + 1
+      talkResult = `@${chanName}, 感謝時中台北市長候選人 ThankEgg  ${covidResult.date.getMonth() + 1
         }/${covidResult.date.getDate()} ${covidResult.title
         }。 資料來源:衛福部疾管署新聞稿`;
     }
