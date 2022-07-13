@@ -55,7 +55,7 @@ client.on("message", async (channel, tags, message, self) => {
   let chanName = `${tags["display-name"]}`;
   let username = chanName;
 
-  if (message.indexOf('!ch') || message.indexOf('!en')) {
+  if (message.includes('!ch') || message.includes('!en')) {
     var modeList = [{
       keyWord: '!ch',
       value: 'zh-TW'
@@ -64,7 +64,7 @@ client.on("message", async (channel, tags, message, self) => {
       keyWord: '!en',
       value: 'en'
     }];
-    var mode = modeList.find(v => message.indexOf(v.keyWord) >= 0);
+    var mode = modeList.find(v => message.includes(v.keyWord));
     let talk = message.substring(message.indexOf(mode.keyWord) + 3,);
     translate(talk, { to: mode.value }).then(res => {
       client.say(channel, `${res.text}`)
