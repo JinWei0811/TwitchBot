@@ -2,6 +2,7 @@ import("/app/botTone.js");
 import("/app/botTransfer.js");
 import tmi from "tmi.js";
 import _ from "lodash";
+import translate from '@vitalets/google-translate-api';
 import * as teams from "./SportTeam.js";
 import {
   getFollowTime,
@@ -53,6 +54,24 @@ client.on("message", async (channel, tags, message, self) => {
   if (self) return;
   let chanName = `${tags["display-name"]}`;
   let username = chanName;
+
+  if (message.indexOf('!ch') || message.indexOf('!en')) {
+    var modeList = [{
+      index: '!ch',
+      value: 'en'
+    },
+    {
+      index: '!en',
+      value: 'zh-TW'
+    }];
+    var mode = modeList.find(v => message.indexOf(v.index) >= 0);
+    let talk = message.substring(message.indexOf(mode.index) + 3,);
+    translate(talk, { to: mode.value }).then(res => {
+      client.say(channel, `${res.text}`)
+    }).catch(err => {
+      console.error(err);
+    });
+  }
 
   if (
     (username == "raccattack850811" && message == "nlnlSoFun") ||
