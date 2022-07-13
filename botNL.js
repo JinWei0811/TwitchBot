@@ -58,11 +58,11 @@ client.on("message", async (channel, tags, message, self) => {
   if (message.indexOf('!ch') || message.indexOf('!en')) {
     var modeList = [{
       index: '!ch',
-      value: 'en'
+      value: 'zh-TW'
     },
     {
       index: '!en',
-      value: 'zh-TW'
+      value: 'en'
     }];
     var mode = modeList.find(v => message.indexOf(v.index) >= 0);
     let talk = message.substring(message.indexOf(mode.index) + 3,);
