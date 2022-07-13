@@ -57,15 +57,15 @@ client.on("message", async (channel, tags, message, self) => {
 
   if (message.indexOf('!ch') || message.indexOf('!en')) {
     var modeList = [{
-      index: '!ch',
+      keyWord: '!ch',
       value: 'zh-TW'
     },
     {
-      index: '!en',
+      keyWord: '!en',
       value: 'en'
     }];
-    var mode = modeList.find(v => message.indexOf(v.index) >= 0);
-    let talk = message.substring(message.indexOf(mode.index) + 3,);
+    var mode = modeList.find(v => message.indexOf(v.keyWord) >= 0);
+    let talk = message.substring(message.indexOf(mode.keyWord) + 3,);
     translate(talk, { to: mode.value }).then(res => {
       client.say(channel, `${res.text}`)
     }).catch(err => {
