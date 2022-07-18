@@ -67,7 +67,8 @@ client.on("message", async (channel, tags, message, self) => {
     var mode = modeList.find(v => message.includes(v.keyWord));
     let talk = message.substring(message.indexOf(mode.keyWord) + 3,);
     translate(talk, { to: mode.value }).then(res => {
-      client.say(channel, `${res.text}`)
+      canDo = false;
+      talkSomething(`@${chanName}, ${res.text}`)
     }).catch(err => {
       console.error(err);
     });
