@@ -130,11 +130,11 @@ client.on("message", async (channel, tags, message, self) => {
         break;
       case "down":
         talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟢 逢低加碼 SwiftRage ${stock[0].symbolName
-          } ${stock[0].change} 跌到 ${stock[0].price}元 PoroSad`;
+          } -${stock[0].change} 跌到 ${stock[0].price}元 PoroSad`;
         break;
       case "up":
         talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🔴 有驚無險 GivePLZ ${stock[0].symbolName
-          } ${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
+          } +${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
         break;
     }
     talkSomething(talkResult);
