@@ -56,6 +56,7 @@ client.on("message", async (channel, tags, message, self) => {
   let username = chanName;
 
   if (message.includes('!ch') || message.includes('!en')) {
+    return;
     var modeList = [{
       keyWord: '!ch',
       value: 'zh-TW'
