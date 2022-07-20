@@ -9,7 +9,7 @@ let headers = {
     'Client-Id': 'gp762nuuoqcoxypju8c569th9wz7q5',
 };
 
-export { getNewCOVID, getStock, getFollowTime, checkUId, checkUserByUID, fetchNBA, fetchMLB, fetchMLBGame }
+export { getNewCOVID, getStock, getFollowTime, checkUId, checkUserByUID, fetchNBA, fetchMLB, fetchMLBGame, fetchLiveStatus }
 
 function getNewCOVID(nowDate) {
     return new Promise((resolve, reject) => {
@@ -149,4 +149,17 @@ function fetchMLBGame(api) {
             });
     })
 
+}
+
+function fetchLiveStatus(channel) {
+    return new Promise((resolve, reject) => {
+        fetch(`https://api.twitch.tv/helix/search/channels?query=${channel}`, {
+            method: 'GET',
+            headers: headers,
+        })
+            .then((response) => response.json())
+            .then((result => {
+                resolve(result);
+            }))
+    })
 }

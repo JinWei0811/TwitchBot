@@ -3,6 +3,7 @@ import _ from "lodash";
 import {
     getFollowTime,
     getNewCOVID,
+    fetchLiveStatus,
     getStock,
     checkUId,
     checkUserByUID,
@@ -14,13 +15,14 @@ import {
 // Parameters
 let canDo = true;
 let covidResult = {};
+let isLiving;
 
 
 const client = new tmi.Client({
     options: { debug: true },
     identity: {
-        username: 'yuniko_bot',
-        password: 'oauth:dspycm2hwzjk8s4rtgs414n5tukekh',
+        username: process.env.USERNAME4,
+        password: process.env.PASSWORD4,
     },
     channels: ["yuniko0720"],
 });
@@ -30,6 +32,7 @@ client.connect();
 client.on('message', async (channel, tags, message, self) => {
     if (self) return;
     if (!canDo) return;
+    if (isLiving) return;
     let chanName = `${tags['display-name']}`;
 
 
@@ -78,3 +81,14 @@ client.on('message', async (channel, tags, message, self) => {
     }
 })
 
+
+setInterval(async () => {
+    let temp = await fetchLiveStatus('yuniko0720');
+    let realResult;
+    for (let item of temp.data) {
+        if (item.broadcaster_login == 'yuniko0720') {
+            realResult = item;
+        }
+    }
+    isLiving = realResult.is_live;
+}, 60000);
