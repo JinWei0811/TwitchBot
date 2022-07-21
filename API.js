@@ -161,5 +161,8 @@ function fetchLiveStatus(channel) {
             .then((result => {
                 resolve(result);
             }))
+            .catch((err) => {
+                console.log(err);
+            });
     })
 }

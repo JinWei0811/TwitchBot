@@ -24,7 +24,7 @@ const client = new tmi.Client({
         username: process.env.USERNAME4,
         password: process.env.PASSWORD4,
     },
-    channels: ["yuniko0720"],
+    channels: ["raccattack850811"],
 });
 
 
