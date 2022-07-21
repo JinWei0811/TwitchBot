@@ -21,8 +21,10 @@ let isLiving;
 const client = new tmi.Client({
     options: { debug: true },
     identity: {
-        username: process.env.USERNAME4,
-        password: process.env.PASSWORD4,
+        username: 'yuniko_bot',
+        password: 'oauth:dspycm2hwzjk8s4rtgs414n5tukekh',
+        // username: process.env.USERNAME4,
+        // password: process.env.PASSWORD4,
     },
     channels: ["raccattack850811"],
 });

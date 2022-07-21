@@ -153,14 +153,17 @@ function fetchMLBGame(api) {
 
 function fetchLiveStatus(channel) {
     return new Promise((resolve, reject) => {
-        fetch(`https://api.twitch.tv/helix/search/channels?query=${channel}`, {
-            method: 'GET',
-            headers: headers,
-        })
+        fetch(
+            `https://api.twitch.tv/helix/search/channels?query=${channel}`,
+            {
+                method: "GET",
+                headers: headers,
+            }
+        )
             .then((response) => response.json())
-            .then((result => {
-                resolve(result);
-            }))
+            .then((data) => {
+                resolve(data);
+            })
             .catch((err) => {
                 console.log(err);
             });
