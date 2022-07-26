@@ -52,6 +52,9 @@ function getNewCOVID(nowDate) {
 
                 let reg = /[0-9],[0-9]/g;
                 resolve(newList.find((v) => v.title.match(reg)));
+            }).catch(err => {
+                console.log(err);
+                throw err
             });
     });
 }
@@ -67,6 +70,10 @@ function getStock(stock_id, area) {
             .then((response) => response.json())
             .then((stock) => {
                 resolve(stock);
+            })
+            .catch(err => {
+                console.log(err);
+                throw err
             });
     })
 }
@@ -97,7 +104,11 @@ function checkUId(user_name) {
             headers: headers,
         })
             .then((response) => response.json())
-            .then((result1) => { resolve(result1); });
+            .then((result1) => { resolve(result1); })
+            .catch(err => {
+                console.log(err);
+                throw err
+            });;
     })
 }
 
@@ -112,6 +123,10 @@ function checkUserByUID(user_id) {
         )
             .then((response) => response.json())
             .then((result2) => { resolve(result2); })
+            .catch(err => {
+                console.log(err);
+                throw err
+            });
     });
 }
 
@@ -124,7 +139,11 @@ function fetchNBA() {
             }
         )
             .then((response) => response.json())
-            .then((result) => { resolve(result) });
+            .then((result) => { resolve(result) })
+            .catch(err => {
+                console.log(err);
+                throw err
+            });;
     })
 }
 
@@ -134,7 +153,11 @@ function fetchMLB() {
             method: "GET",
         })
             .then((response) => response.json())
-            .then((result) => { resolve(result); });
+            .then((result) => { resolve(result); })
+            .catch(err => {
+                console.log(err);
+                throw err
+            });;
     })
 }
 
@@ -146,6 +169,10 @@ function fetchMLBGame(api) {
             .then((response) => response.json())
             .then((result) => {
                 resolve(result);
+            })
+            .catch(err => {
+                console.log(err);
+                throw err
             });
     })
 
