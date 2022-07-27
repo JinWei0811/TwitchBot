@@ -43,7 +43,7 @@ const client = new tmi.Client({
 });
 
 client.connect();
-client.on("message", async (channel, tags, message, self) => {
+client.on("message", (channel, tags, message, self) => {
   // Ignore echoed messages.
   if (self) return;
   let chanName = `${tags["display-name"]}`;
@@ -81,290 +81,302 @@ client.on("message", async (channel, tags, message, self) => {
   }
 
   if (message === "!確診人數" && canDo) {
-    let nowDate = new Date(
-      new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
-    );
-    let talkResult = "";
-    nowDate.setHours(nowDate.getHours() - 10);
-    if (
-      _.isEmpty(covidResult) ||
-      covidResult.date.getDate() !== nowDate.getDate()
-    ) {
-      try {
-        covidResult = await getNewCOVID(nowDate);
-      } catch (e) {
-        console.log(`covidResult error ${e}`)
+    (async () => {
+      let nowDate = new Date(
+        new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
+      );
+      let talkResult = "";
+      nowDate.setHours(nowDate.getHours() - 10);
+      if (
+        _.isEmpty(covidResult) ||
+        covidResult.date.getDate() !== nowDate.getDate()
+      ) {
+        try {
+          covidResult = await getNewCOVID(nowDate);
+        } catch (e) {
+          console.log(`covidResult error ${e}`)
+        }
       }
-    }
 
-    if (_.isEmpty(covidResult)) {
-      talkResult = `@${chanName}, 今日人數尚未公布。  資料來源:衛福部疾管署新聞稿 RaccAttack`;
-    } else {
-      talkResult = `@${chanName}, 感謝時中台北市長候選人 ThankEgg  ${covidResult.date.getMonth() + 1
-        }/${covidResult.date.getDate()} ${covidResult.title
-        }。 資料來源:衛福部疾管署新聞稿`;
-    }
-    talkSomething(talkResult);
+      if (_.isEmpty(covidResult)) {
+        talkResult = `@${chanName}, 今日人數尚未公布。  資料來源:衛福部疾管署新聞稿 RaccAttack`;
+      } else {
+        talkResult = `@${chanName}, 感謝時中台北市長候選人 ThankEgg  ${covidResult.date.getMonth() + 1
+          }/${covidResult.date.getDate()} ${covidResult.title
+          }。 資料來源:衛福部疾管署新聞稿`;
+      }
+      talkSomething(talkResult);
+    })();
   }
 
   if (message.includes("!stock") && canDo) {
-    let stock_list = message.match(/[0-9]+/);
-    let talkResult = "";
-    if (_.isNil(stock_list)) {
-      talkResult = `@${chanName}, 查無股票代碼`;
-      talkSomething(talkResult);
-    }
-    let stock_id = stock_list[0];
-    let date = new Date(
-      new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
-    );
-    let stock
-    try {
-      stock = await getStock(stock_id, ".TW");
-    } catch (e) {
-      console.log(`getStock TW error ${e}`)
-    }
-    if (_.isEmpty(stock)) {
-      try {
-        stock = await getStock(stock_id, "");
-      } catch (e) {
-        console.log(`getStock error ${e}`)
+    (async () => {
+      let stock_list = message.match(/[0-9]+/);
+      let talkResult = "";
+      if (_.isNil(stock_list)) {
+        talkResult = `@${chanName}, 查無股票代碼`;
+        talkSomething(talkResult);
       }
-    }
-    if (_.isEmpty(stock)) {
-      talkResult = `@${chanName}, 查無此檔股票`;
+      let stock_id = stock_list[0];
+      let date = new Date(
+        new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
+      );
+      let stock
+      try {
+        stock = await getStock(stock_id, ".TW");
+      } catch (e) {
+        console.log(`getStock TW error ${e}`)
+      }
+      if (_.isEmpty(stock)) {
+        try {
+          stock = await getStock(stock_id, "");
+        } catch (e) {
+          console.log(`getStock error ${e}`)
+        }
+      }
+      if (_.isEmpty(stock)) {
+        talkResult = `@${chanName}, 查無此檔股票`;
+        talkSomething(talkResult);
+        return;
+      }
+      switch (stock[0].changeStatus) {
+        case "equal":
+          talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟡 有驚無險 GivePLZ ${stock[0].symbolName
+            } 平盤 ${stock[0].price}元, 白忙一場`;
+          break;
+        case "down":
+          talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟢 逢低加碼 SwiftRage ${stock[0].symbolName
+            } ${stock[0].change} 跌到 ${stock[0].price}元 PoroSad`;
+          break;
+        case "up":
+          talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🔴 有驚無險 GivePLZ ${stock[0].symbolName
+            } +${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
+          break;
+      }
       talkSomething(talkResult);
-      return;
-    }
-    switch (stock[0].changeStatus) {
-      case "equal":
-        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟡 有驚無險 GivePLZ ${stock[0].symbolName
-          } 平盤 ${stock[0].price}元, 白忙一場`;
-        break;
-      case "down":
-        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟢 逢低加碼 SwiftRage ${stock[0].symbolName
-          } -${stock[0].change} 跌到 ${stock[0].price}元 PoroSad`;
-        break;
-      case "up":
-        talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🔴 有驚無險 GivePLZ ${stock[0].symbolName
-          } +${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
-        break;
-    }
-    talkSomething(talkResult);
+    })();
   }
 
   if (message.includes("!追隨")) {
-    let to_id = "";
-    let to_name = "";
-    let from_id = tags["user-id"];
-    let talkResult = "";
-    for (let item of streamerList) {
-      if (message.includes(item.name)) {
-        to_id = item.value;
-        to_name = item.name;
-        break;
+    (async () => {
+      let to_id = "";
+      let to_name = "";
+      let from_id = tags["user-id"];
+      let talkResult = "";
+      for (let item of streamerList) {
+        if (message.includes(item.name)) {
+          to_id = item.value;
+          to_name = item.name;
+          break;
+        }
       }
-    }
-    if (to_id === "") {
-      if (message !== "!追隨時間") {
+      if (to_id === "") {
+        if (message !== "!追隨時間") {
+          return;
+        }
+        to_id = "43177431";
+      }
+      let follow_info;
+      try {
+        follow_info = await getFollowTime(from_id, to_id);
+      } catch (e) {
+        console.log(`follow_info error ${e}`)
+      }
+      if (follow_info.total === 0) {
+        talkResult = `@${chanName} 你沒有追隨${to_name} cmonBruh`;
+        talkSomething(talkResult);
         return;
       }
-      to_id = "43177431";
-    }
-    let follow_info;
-    try {
-      follow_info = await getFollowTime(from_id, to_id);
-    } catch (e) {
-      console.log(`follow_info error ${e}`)
-    }
-    if (follow_info.total === 0) {
-      talkResult = `@${chanName} 你沒有追隨${to_name} cmonBruh`;
+      let follow_date = new Date(follow_info.data[0].followed_at);
+      talkResult = `@${chanName} 您從${follow_date.getFullYear()}年${follow_date.getMonth() + 1
+        }月${follow_date.getDate()}日開始追隨${to_name}`;
       talkSomething(talkResult);
-      return;
-    }
-    let follow_date = new Date(follow_info.data[0].followed_at);
-    talkResult = `@${chanName} 您從${follow_date.getFullYear()}年${follow_date.getMonth() + 1
-      }月${follow_date.getDate()}日開始追隨${to_name}`;
-    talkSomething(talkResult);
+    })();
   }
 
   if (message.includes("!稽查")) {
-    let user_name = message.match(/[A-Za-z0-9_]+/);
-    let talkResult = "";
-    if (_.isNil(user_name)) {
-      return;
-    }
-    let user_info;
-    try {
-      user_info = await checkUId(user_name);
-    } catch (e) {
-      console.log(`checkUID error ${e}`)
-    }
-    if (user_info.data.length === 0) {
-      talkResult = `MrDestructoid @${chanName}, 查無 ${user_name} 此人`;
-      talkSomething(talkResult);
-      return;
-    }
-    let uid = user_info.data[0].id;
-    let follow_info;
-    try {
-      follow_info = await checkUserByUID(uid);
-    } catch (e) {
-      console.log(`follow_info error ${e}`)
-    }
-    let response = `${user_info.data[0].display_name} 追隨名單`;
-    let follow_length =
-      follow_info.data.length > 5 ? 5 : follow_info.data.length;
-    for (let i = 0; i < follow_length; i++) {
-      if (follow_length !== follow_length - 1) {
-        response += `【${follow_info.data[i].to_name}】,`;
-      } else {
-        response += `【${follow_info.data[i].to_name}】`;
+    (async () => {
+      let user_name = message.match(/[A-Za-z0-9_]+/);
+      let talkResult = "";
+      if (_.isNil(user_name)) {
+        return;
       }
-    }
-    talkResult = `@${chanName} ${response}`;
-    talkSomething(talkResult);
+      let user_info;
+      try {
+        user_info = await checkUId(user_name);
+      } catch (e) {
+        console.log(`checkUID error ${e}`)
+      }
+      if (user_info.data.length === 0) {
+        talkResult = `MrDestructoid @${chanName}, 查無 ${user_name} 此人`;
+        talkSomething(talkResult);
+        return;
+      }
+      let uid = user_info.data[0].id;
+      let follow_info;
+      try {
+        follow_info = await checkUserByUID(uid);
+      } catch (e) {
+        console.log(`follow_info error ${e}`)
+      }
+      let response = `${user_info.data[0].display_name} 追隨名單`;
+      let follow_length =
+        follow_info.data.length > 5 ? 5 : follow_info.data.length;
+      for (let i = 0; i < follow_length; i++) {
+        if (follow_length !== follow_length - 1) {
+          response += `【${follow_info.data[i].to_name}】,`;
+        } else {
+          response += `【${follow_info.data[i].to_name}】`;
+        }
+      }
+      talkResult = `@${chanName} ${response}`;
+      talkSomething(talkResult);
+    })();
   }
 
   if (containNBATeam(message)) {
-    let team_code = NBA.find((v) =>
-      v.teamCH.includes(message.split("!")[1])
-    ).teamEN;
-    let NBA_info;
-    try {
-      NBA_info = await fetchNBA();
-    } catch (e) {
-      console.log(`fetchNBA error ${e}`)
-    }
-    let games = NBA_info.scoreboard.games;
-    let talkResult = "";
-    for (let item of games) {
-      if (item.gameCode.includes(team_code)) {
-        let homeTeam = NBA.find(
-          (v) => v.teamEN == item.homeTeam.teamTricode
-        ).teamCH;
-        let awayTeam = NBA.find(
-          (v) => v.teamEN == item.awayTeam.teamTricode
-        ).teamCH;
-        let homeScore = item.homeTeam.score;
-        let awayScore = item.awayTeam.score;
-        let gameStatus = "";
-        let nonsense = "";
+    (async () => {
+      let team_code = NBA.find((v) =>
+        v.teamCH.includes(message.split("!")[1])
+      ).teamEN;
+      let NBA_info;
+      try {
+        NBA_info = await fetchNBA();
+      } catch (e) {
+        console.log(`fetchNBA error ${e}`)
+      }
+      let games = NBA_info.scoreboard.games;
+      let talkResult = "";
+      for (let item of games) {
+        if (item.gameCode.includes(team_code)) {
+          let homeTeam = NBA.find(
+            (v) => v.teamEN == item.homeTeam.teamTricode
+          ).teamCH;
+          let awayTeam = NBA.find(
+            (v) => v.teamEN == item.awayTeam.teamTricode
+          ).teamCH;
+          let homeScore = item.homeTeam.score;
+          let awayScore = item.awayTeam.score;
+          let gameStatus = "";
+          let nonsense = "";
 
-        if (item.gameStatus == 1) {
-          gameStatus = `尚未開始， ${item.gameStatusText} 開打`;
-        } else {
-          if (item.gameStatusText.trim() == "Half") {
-            gameStatus = "中場休息";
-          } else if (item.gameStatusText.trim() == "Final") {
-            gameStatus = "終場";
+          if (item.gameStatus == 1) {
+            gameStatus = `尚未開始， ${item.gameStatusText} 開打`;
           } else {
-            let statusReg = /Q[1-4]?/;
-            let statusText = item.gameStatusText;
-            let statusCH =
-              "第" + statusText.match(statusReg)[0].replace("Q", "") + "節";
-            gameStatus = statusText.replace(statusReg, statusCH);
+            if (item.gameStatusText.trim() == "Half") {
+              gameStatus = "中場休息";
+            } else if (item.gameStatusText.trim() == "Final") {
+              gameStatus = "終場";
+            } else {
+              let statusReg = /Q[1-4]?/;
+              let statusText = item.gameStatusText;
+              let statusCH =
+                "第" + statusText.match(statusReg)[0].replace("Q", "") + "節";
+              gameStatus = statusText.replace(statusReg, statusCH);
+            }
+            talkResult = `@${chanName}, ${gameStatus}  ${homeTeam} ${homeScore} ： ${awayTeam} ${awayScore} `;
+            talkSomething(talkResult);
           }
-          talkResult = `@${chanName}, ${gameStatus}  ${homeTeam} ${homeScore} ： ${awayTeam} ${awayScore} `;
-          talkSomething(talkResult);
         }
       }
-    }
+    })();
   }
 
   if (containMLBTeam(message)) {
-    let teamId = MLB.find((v) =>
-      v.teamCH.includes(message.split("!")[1])
-    ).teamId;
-    try {
-      MLB_info = await fetchMLB();
-    } catch (e) {
-      console.log(`fetchMLB error ${e}`)
-    }
-    let games = MLB_info.dates[0].games;
-    let talkResult = "";
-    for (let item of games) {
-      if (
-        item.teams.home.team.id === teamId ||
-        item.teams.away.team.id === teamId
-      ) {
-        let homeTeam = MLB.find(
-          (v) => v.teamId === item.teams.home.team.id
-        ).teamCH;
-        let awayTeam = MLB.find(
-          (v) => v.teamId === item.teams.away.team.id
-        ).teamCH;
-        let homeScore = "";
-        let awayScore = "";
-        let currentInning = "";
-        let state = "";
-        let status = "";
-        if (
-          item.status.codedGameState === "F" ||
-          item.status.codedGameState === "O"
-        ) {
-          status = "比賽結束";
-          homeScore = item.teams.home.score;
-          awayScore = item.teams.away.score;
-        } else if (item.status.codedGameState === "I") {
-          status = "比賽進行中";
-          let game_info
-          try {
-            game_info = await fetchMLBGame(item.link);
-          } catch (e) {
-            console.log(`fetchMLBGame error ${e}`)
-          }
-          currentInning = game_info.liveData.linescore.currentInning;
-          homeScore = item.teams.home.score;
-          awayScore = item.teams.away.score;
-          switch (game_info.liveData.linescore.inningState) {
-            case "Bottom":
-              state = "局下半";
-              break;
-            case "Top":
-              state = "局上半";
-              break;
-            default:
-              state = "局中";
-          }
-        } else if (item.status.codedGameState === "C") {
-          status = "比賽取消";
-        } else if (item.status.codeGameState === "D") {
-          status = "比賽Delay";
-        } else if (item.status.codeGameState === "P") {
-          status = "比賽即將開始";
-        } else if (item.status.codedGameState === "S") {
-          let startDate = new Date(new Date(item.gameDate));
-          let hour =
-            startDate.getHours() > 9
-              ? startDate.getHours()
-              : `0${startDate.getHours()}`;
-          let minutes =
-            startDate.getMinutes() > 9
-              ? startDate.getMinutes()
-              : `0${startDate.getMinutes()}`;
-          status = `比賽預計 ${hour}:${minutes} 開始`;
-        }
-
-        let nowDate = new Date(
-          new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
-        );
-        let nowHour =
-          nowDate.getHours() > 9
-            ? nowDate.getHours()
-            : `0${nowDate.getHours()}`;
-        let nowMinutes =
-          nowDate.getMinutes() > 9
-            ? nowDate.getMinutes()
-            : `0${nowDate.getMinutes()}`;
-        let nowSeconds =
-          nowDate.getSeconds() > 9
-            ? nowDate.getSeconds()
-            : `0${nowDate.getSeconds()}`;
-        talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${status}${currentInning} ${state} ${homeTeam} ${homeScore} : ${awayTeam} ${awayScore}`;
-        talkSomething(talkResult);
+    (async () => {
+      let teamId = MLB.find((v) =>
+        v.teamCH.includes(message.split("!")[1])
+      ).teamId;
+      try {
+        MLB_info = await fetchMLB();
+      } catch (e) {
+        console.log(`fetchMLB error ${e}`)
       }
-    }
+      let games = MLB_info.dates[0].games;
+      let talkResult = "";
+      for (let item of games) {
+        if (
+          item.teams.home.team.id === teamId ||
+          item.teams.away.team.id === teamId
+        ) {
+          let homeTeam = MLB.find(
+            (v) => v.teamId === item.teams.home.team.id
+          ).teamCH;
+          let awayTeam = MLB.find(
+            (v) => v.teamId === item.teams.away.team.id
+          ).teamCH;
+          let homeScore = "";
+          let awayScore = "";
+          let currentInning = "";
+          let state = "";
+          let status = "";
+          if (
+            item.status.codedGameState === "F" ||
+            item.status.codedGameState === "O"
+          ) {
+            status = "比賽結束";
+            homeScore = item.teams.home.score;
+            awayScore = item.teams.away.score;
+          } else if (item.status.codedGameState === "I") {
+            status = "比賽進行中";
+            let game_info
+            try {
+              game_info = await fetchMLBGame(item.link);
+            } catch (e) {
+              console.log(`fetchMLBGame error ${e}`)
+            }
+            currentInning = game_info.liveData.linescore.currentInning;
+            homeScore = item.teams.home.score;
+            awayScore = item.teams.away.score;
+            switch (game_info.liveData.linescore.inningState) {
+              case "Bottom":
+                state = "局下半";
+                break;
+              case "Top":
+                state = "局上半";
+                break;
+              default:
+                state = "局中";
+            }
+          } else if (item.status.codedGameState === "C") {
+            status = "比賽取消";
+          } else if (item.status.codeGameState === "D") {
+            status = "比賽Delay";
+          } else if (item.status.codeGameState === "P") {
+            status = "比賽即將開始";
+          } else if (item.status.codedGameState === "S") {
+            let startDate = new Date(new Date(item.gameDate));
+            let hour =
+              startDate.getHours() > 9
+                ? startDate.getHours()
+                : `0${startDate.getHours()}`;
+            let minutes =
+              startDate.getMinutes() > 9
+                ? startDate.getMinutes()
+                : `0${startDate.getMinutes()}`;
+            status = `比賽預計 ${hour}:${minutes} 開始`;
+          }
+
+          let nowDate = new Date(
+            new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
+          );
+          let nowHour =
+            nowDate.getHours() > 9
+              ? nowDate.getHours()
+              : `0${nowDate.getHours()}`;
+          let nowMinutes =
+            nowDate.getMinutes() > 9
+              ? nowDate.getMinutes()
+              : `0${nowDate.getMinutes()}`;
+          let nowSeconds =
+            nowDate.getSeconds() > 9
+              ? nowDate.getSeconds()
+              : `0${nowDate.getSeconds()}`;
+          talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${status}${currentInning} ${state} ${homeTeam} ${homeScore} : ${awayTeam} ${awayScore}`;
+          talkSomething(talkResult);
+        }
+      }
+    })();
   }
 
   function talkSomething(result) {
