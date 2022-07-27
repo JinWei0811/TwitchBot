@@ -29,6 +29,9 @@ const client = new tmi.Client({
 
 
 client.connect();
+client.on('connected', (address, port) => {
+    checkLiveStatus();
+})
 client.on('message', async (channel, tags, message, self) => {
     if (self) return;
     if (!canDo) return;
@@ -81,8 +84,7 @@ client.on('message', async (channel, tags, message, self) => {
     }
 })
 
-
-setInterval(async () => {
+async function checkLiveStatus() {
     let temp = await fetchLiveStatus('yuniko0720');
     let realResult;
     for (let item of temp.data) {
@@ -91,4 +93,9 @@ setInterval(async () => {
         }
     }
     isLiving = realResult.is_live;
+    console.log(isLiving);
+}
+
+setInterval(async () => {
+    checkLiveStatus();
 }, 60000);
