@@ -1,6 +1,6 @@
 import("/app/botTone.js");
 import("/app/botTransfer.js");
-import("/app/botYuniko.js");
+// import("/app/botYuniko.js");
 import tmi from "tmi.js";
 import _ from "lodash";
 import translate from '@vitalets/google-translate-api';
