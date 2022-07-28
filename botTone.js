@@ -91,11 +91,7 @@ client.on("message", (channel, tags, message, self) => {
         _.isEmpty(covidResult) ||
         covidResult.date.getDate() !== nowDate.getDate()
       ) {
-        try {
-          covidResult = await getNewCOVID(nowDate);
-        } catch (e) {
-          console.log(`covidResult error ${e}`)
-        }
+        covidResult = await getNewCOVID(nowDate);
       }
 
       if (_.isEmpty(covidResult)) {
@@ -121,18 +117,9 @@ client.on("message", (channel, tags, message, self) => {
       let date = new Date(
         new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
       );
-      let stock
-      try {
-        stock = await getStock(stock_id, ".TW");
-      } catch (e) {
-        console.log(`getStock TW error ${e}`)
-      }
+      let stock = await getStock(stock_id, ".TW");
       if (_.isEmpty(stock)) {
-        try {
-          stock = await getStock(stock_id, "");
-        } catch (e) {
-          console.log(`getStock error ${e}`)
-        }
+        stock = await getStock(stock_id, "");
       }
       if (_.isEmpty(stock)) {
         talkResult = `@${chanName}, 查無此檔股票`;
@@ -176,12 +163,7 @@ client.on("message", (channel, tags, message, self) => {
         }
         to_id = "43177431";
       }
-      let follow_info;
-      try {
-        follow_info = await getFollowTime(from_id, to_id);
-      } catch (e) {
-        console.log(`follow_info error ${e}`)
-      }
+      let follow_info = await getFollowTime(from_id, to_id);
       if (follow_info.total === 0) {
         talkResult = `@${chanName} 你沒有追隨${to_name} cmonBruh`;
         talkSomething(talkResult);
@@ -201,24 +183,14 @@ client.on("message", (channel, tags, message, self) => {
       if (_.isNil(user_name)) {
         return;
       }
-      let user_info;
-      try {
-        user_info = await checkUId(user_name);
-      } catch (e) {
-        console.log(`checkUID error ${e}`)
-      }
+      let user_info = await checkUId(user_name);
       if (user_info.data.length === 0) {
         talkResult = `MrDestructoid @${chanName}, 查無 ${user_name} 此人`;
         talkSomething(talkResult);
         return;
       }
       let uid = user_info.data[0].id;
-      let follow_info;
-      try {
-        follow_info = await checkUserByUID(uid);
-      } catch (e) {
-        console.log(`follow_info error ${e}`)
-      }
+      let follow_info = await checkUserByUID(uid);
       let response = `${user_info.data[0].display_name} 追隨名單`;
       let follow_length =
         follow_info.data.length > 5 ? 5 : follow_info.data.length;
@@ -239,12 +211,7 @@ client.on("message", (channel, tags, message, self) => {
       let team_code = NBA.find((v) =>
         v.teamCH.includes(message.split("!")[1])
       ).teamEN;
-      let NBA_info;
-      try {
-        NBA_info = await fetchNBA();
-      } catch (e) {
-        console.log(`fetchNBA error ${e}`)
-      }
+      let NBA_info = await fetchNBA();
       let games = NBA_info.scoreboard.games;
       let talkResult = "";
       for (let item of games) {
@@ -287,11 +254,7 @@ client.on("message", (channel, tags, message, self) => {
       let teamId = MLB.find((v) =>
         v.teamCH.includes(message.split("!")[1])
       ).teamId;
-      try {
-        MLB_info = await fetchMLB();
-      } catch (e) {
-        console.log(`fetchMLB error ${e}`)
-      }
+      let MLB_info = await fetchMLB();
       let games = MLB_info.dates[0].games;
       let talkResult = "";
       for (let item of games) {
@@ -319,12 +282,7 @@ client.on("message", (channel, tags, message, self) => {
             awayScore = item.teams.away.score;
           } else if (item.status.codedGameState === "I") {
             status = "比賽進行中";
-            let game_info
-            try {
-              game_info = await fetchMLBGame(item.link);
-            } catch (e) {
-              console.log(`fetchMLBGame error ${e}`)
-            }
+            let game_info = await fetchMLBGame(item.link);
             currentInning = game_info.liveData.linescore.currentInning;
             homeScore = item.teams.home.score;
             awayScore = item.teams.away.score;
