@@ -78,8 +78,8 @@ app.post("/chat", function (request, response) {
 });
 
 setInterval(() => {
-    // fetch("https://twitcbot850811.herokuapp.com/wakeup", {
-    fetch("https://twitchbot0726.herokuapp.com//wakeup", {
+    fetch("https://twitchbot850811.herokuapp.com/wakeup", {
+        // fetch("https://twitchbot0726.herokuapp.com//wakeup", {
         method: "GET",
     });
 }, 180000);

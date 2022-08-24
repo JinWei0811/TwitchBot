@@ -6,6 +6,9 @@ function myFunction() {
   fetch(
     `https://twitcbot850811.herokuapp.com/search?twitchId=${twitchId}`
   )
+  // fetch(
+  //   `https://twitchbot0726.herokuapp.com/search?twitchId=${twitchId}`
+  // )
     .then((response) => response.json())
     .then((result) => {
       console.log(result);

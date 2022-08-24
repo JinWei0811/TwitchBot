@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <style>
-    table,
-    th,
-    td {
-      border: 1px solid black;
-    }
-  </style>
-  <body>
-    <div>
-      <div class="form-row col-12">
-        <label>顯示名稱</label>
-        <input type="text" name="twitchId" id="twitchId" />
-      </div>
-      <div class="form-row">
-        <label>輸入內容</label>
-        <input type="text" style="width: 300px" name="content" id="content" />
-        <button class="btn btn-primary" onclick="myFunction()">送出</button>
-      </div>
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid black;
+  }
+</style>
+
+<body>
+  <div>
+    <div class="form-row col-12">
+      <label>顯示名稱</label>
+      <input type="text" name="twitchId" id="twitchId" />
     </div>
-    <div>
-      <label>如果可以希望可以微修改顯示名稱(與原名稱不同) 😅</label>
+    <div class="form-row">
+      <label>輸入內容</label>
+      <input type="text" style="width: 300px" name="content" id="content" />
+      <button class="btn btn-primary" onclick="myFunction()">送出</button>
     </div>
-    <div>
-      <label>請注意言論，保護代言機器人 😅</label>
-    </div>
-    <div>
-      <iframe
+  </div>
+  <div>
+    <label>如果可以希望可以微修改顯示名稱(與原名稱不同) 😅</label>
+  </div>
+  <div>
+    <label>請注意言論，保護代言機器人 😅</label>
+  </div>
+  <div>
+    <!-- <iframe
         id="twitch-chat-embed"
         src="https://www.twitch.tv/embed/never_loses/chat?parent=twitchbot0726.herokuapp.com"
         height="500"
         width="350"
       >
-      </iframe>
-    </div>
-    <script src="chat.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    />
-  </body>
+      </iframe> -->
+    <iframe id="twitch-chat-embed" src="https://www.twitch.tv/embed/never_loses/chat?parent=twitchbot850811.herokuapp.com"
+      height="500" width="350">
+    </iframe>
+  </div>
+  <script src="chat.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+</body>
+
 </html>
