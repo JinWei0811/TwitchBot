@@ -19,8 +19,8 @@ function myFunction() {
     grab.value = "";
   }
 
-  fetch(`https://twitcbot850811.herokuapp.com/chat`, {
-  // fetch(`https://twitchbot0726.herokuapp.com/chat`, {
+  fetch(`https://twitchbot850811.herokuapp.com/chat`, {
+    // fetch(`https://twitchbot0726.herokuapp.com/chat`, {
     method: "POST",
     headers: myHeaders,
     mode: "cors",
@@ -28,8 +28,5 @@ function myFunction() {
     body: JSON.stringify(body),
   })
     .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-      return;
-    });
+    .then((result) => { return; });
 }
