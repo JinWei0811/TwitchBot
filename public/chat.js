@@ -20,7 +20,8 @@ function myFunction() {
   }
 
   // fetch(`https://twitchbot850811.herokuapp.com/chat`, {
-    fetch(`https://twitchbot0726.herokuapp.com/chat`, {
+    // fetch(`https://twitchbot0726.herokuapp.com/chat`, {
+    fetch(`https://twitchbot.onrender.com/chat`, {
     method: "POST",
     headers: myHeaders,
     mode: "cors",

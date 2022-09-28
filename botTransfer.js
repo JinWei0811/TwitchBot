@@ -79,7 +79,8 @@ app.post("/chat", function (request, response) {
 
 setInterval(() => {
     // fetch("https://twitchbot850811.herokuapp.com/wakeup", {
-        fetch("https://twitchbot0726.herokuapp.com//wakeup", {
+    // fetch("https://twitchbot0726.herokuapp.com//wakeup", {
+    fetch("https://twitchbot.onrender.com/wakeup", {
         method: "GET",
     });
 }, 180000);
