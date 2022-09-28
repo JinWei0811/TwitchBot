@@ -3,8 +3,11 @@ var recordList = [];
 function myFunction() {
   var twitchId = document.getElementById("twitchId").value;
 
+  // fetch(
+  //   `https://twitchbot850811.herokuapp.com/search?twitchId=${twitchId}`
+  // )
   fetch(
-    `https://twitcbot850811.herokuapp.com/search?twitchId=${twitchId}`
+    `https://twitchbot0726.herokuapp.com/search?twitchId=${twitchId}`
   )
     .then((response) => response.json())
     .then((result) => {
@@ -31,7 +34,7 @@ function research() {
   let newRecordList = [];
   for (let i = 0; i < recordList.length; i++) {
     fetch(
-      `https://twitcbot850811.herokuapp.com/search?twitchId=${recordList[i].twitchId}`
+      `https://twitchbot850811.herokuapp.com/search?twitchId=${recordList[i].twitchId}`
     )
       .then((response) => response.json())
       .then((result) => {
@@ -58,7 +61,7 @@ function research() {
 function clear() {
   console.log('clear');
   recordList = [];
-  document.querySelector("#myTable tbody").innerHTML =  `<tr></tr>`
+  document.querySelector("#myTable tbody").innerHTML = `<tr></tr>`
   // recordList
   //   .map(
   //     (result) =>
