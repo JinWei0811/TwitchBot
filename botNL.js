@@ -1,5 +1,5 @@
-import("/app/botTone.js");
-import("/app/botTransfer.js");
+import("botTone.js");
+import("botTransfer.js");
 // import("/app/botYuniko.js");
 import tmi from "tmi.js";
 import _ from "lodash";
