@@ -371,12 +371,12 @@ client.on("message", (channel, tags, message, self) => {
               } else {
                 talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
               }
-              talkSomething(talkResult);
+              // talkSomething(talkResult);
               return;
             }
           }
           talkResult = `@${chanName}, 今日${message}無比賽`;
-          talkSomething(talkResult);
+          // talkSomething(talkResult);
         }
       }
     })();
