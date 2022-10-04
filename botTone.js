@@ -1,6 +1,7 @@
 import tmi from "tmi.js";
 import _ from "lodash";
 import * as teams from "./SportTeam.js";
+import * as GameData from "./GameData.js";
 import {
   getFollowTime,
   getNewCOVID,
@@ -10,12 +11,14 @@ import {
   fetchNBA,
   fetchMLB,
   fetchMLBGame,
+  getGameInfo,
 } from "./API.js";
 
 let canDo = true;
 let covidResult = {};
 const NBA = teams.NBA;
 const MLB = teams.MLB;
+const CPBL = teams.CPBL_TEAM;
 const weekday = [
   "星期日",
   "星期一",
@@ -337,6 +340,48 @@ client.on("message", (channel, tags, message, self) => {
     })();
   }
 
+  if (containCPBLTeam(message)) {
+    (async () => {
+      let date = new Date(
+        new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
+      );
+      let month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+      let days = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+      let dateString = `${date.getFullYear()}-${month}-${days}`;
+      let talkResult = '';
+      // let dateString = `2022-09-04`;
+      let todayGames = GameData.GameData.filter(v => v.GameDate.match(dateString));
+      for (let game of todayGames) {
+        if (game.VisitingTeamName.match(teamName) || game.HomeTeamName.match(teamName)) {
+          let form = {
+            GameSno: game.GameSno,
+            KindCode: game.KindCode,
+            Year: game.Year,
+            PrevOrNext: "",
+            PresentStatus: "",
+            SelectKindCode: game.KindCode,
+            SelectYear: date.getFullYear(),
+            SelectMonth: date.getMonth() + 1,
+          }
+          let gameLogs = await getGameInfo(form);
+          for (let gameLog of gameLogs) {
+            if (gameLog.GameSno === game.GameSno) {
+              if (gameLog.GameStatusChi == '尚未開始') {
+                talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${gameLog.GameStatusChi} ${DateToString(gameLog.GameDateTimeS)} ${gameLog.HomeTeamName} : ${gameLog.VisitingTeamName}`
+              } else {
+                talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${gameLog.GameStatusChi} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
+              }
+              talkSomething(talkResult);
+              return;
+            }
+          }
+          talkResult = `@${chanName}, 今日${message}無比賽`;
+          talkSomething(talkResult);
+        }
+      }
+    })();
+  }
+
   function talkSomething(result) {
     client.say(channel, result);
     canDo = false;
@@ -415,4 +460,20 @@ client.on("message", (channel, tags, message, self) => {
       //|| message == "!MLB勇士"
     );
   }
+
+  function containCPBLTeam(message) {
+    for (let team of CPBL) {
+      if (team.name.includes(message)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function DateToString(time) {
+    let date = new Date(time);
+    let dateString = `${date.getHours()}:${date.getMinutes()}`
+    return dateString;
+  }
+
 });

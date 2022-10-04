@@ -9,7 +9,7 @@ let headers = {
     'Client-Id': 'gp762nuuoqcoxypju8c569th9wz7q5',
 };
 
-export { getNewCOVID, getStock, getFollowTime, checkUId, checkUserByUID, fetchNBA, fetchMLB, fetchMLBGame, fetchLiveStatus }
+export { getNewCOVID, getStock, getFollowTime, checkUId, checkUserByUID, fetchNBA, fetchMLB, fetchMLBGame, fetchLiveStatus, getGameInfo }
 
 function getNewCOVID(nowDate) {
     return new Promise((resolve, reject) => {
@@ -167,5 +167,26 @@ function fetchLiveStatus(channel) {
             .catch((err) => {
                 console.log(err);
             });
+    })
+}
+
+function getGameInfo(form) {
+    return new Promise((resolve, reject) => {
+        request(
+            {
+                url: 'https://www.cpbl.com.tw/box/getlive',
+                method: 'POST',
+                headers: { 'content-type': ' application/json' },
+                "rejectUnauthorized": false,
+                form: form
+            },
+            function (error, response, body) {
+                if (error || !body) {
+                    return;
+                }
+                var temp = JSON.parse(body.toString('utf-8'))
+                resolve(JSON.parse(temp.GameDetailJson));
+            }
+        )
     })
 }
