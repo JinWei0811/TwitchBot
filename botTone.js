@@ -367,9 +367,9 @@ client.on("message", (channel, tags, message, self) => {
           for (let gameLog of gameLogs) {
             if (gameLog.GameSno === game.GameSno) {
               if (gameLog.GameStatusChi == '尚未開始') {
-                talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${gameLog.GameStatusChi} ${DateToString(gameLog.GameDateTimeS)} ${gameLog.HomeTeamName} : ${gameLog.VisitingTeamName}`
+                talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${DateToString(gameLog.GameDateTimeS)} ${gameLog.HomeTeamName} : ${gameLog.VisitingTeamName}`
               } else {
-                talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${gameLog.GameStatusChi} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
+                talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
               }
               talkSomething(talkResult);
               return;
