@@ -366,7 +366,8 @@ client.on("message", (channel, tags, message, self) => {
           let gameLogs = await getGameInfo(form);
           for (let gameLog of gameLogs) {
             if (gameLog.GameSno === game.GameSno) {
-              if (gameLog.GameStatusChi == '尚未開始') {
+              if (gameLog.GameStatus == '1' || gameLog.GameStatus == '4' ||
+                gameLog.GameStatus == '5' || gameLog.GameStatus == '6') {
                 talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${DateToString(gameLog.GameDateTimeS)} ${gameLog.HomeTeamName} : ${gameLog.VisitingTeamName}`
               } else {
                 talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
