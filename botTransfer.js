@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import fetch from "node-fetch";
 
 const app = express();
+const port = process.env.PORT || 3001;
 let headers = {
     Authorization: process.env.Authorization,
     "Client-Id": process.env.ClientId,
@@ -28,8 +29,7 @@ let options = {
 
 let client = new tmi.client(options);
 client.connect();
-
-const listener = app.listen(process.env.PORT, function () { });
+const listener = app.listen(port, function () { console.log(`Example app listening on port ${port}!`) });
 
 app.get("/search", function (request, response) {
     let twitchId = request.query.twitchId;
