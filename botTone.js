@@ -340,7 +340,7 @@ client.on("message", (channel, tags, message, self) => {
     })();
   }
 
-  if (containCPBLTeam(message)) {
+  if (message.includes('!') && containCPBLTeam(message)) {
     (async () => {
       let date = new Date(
         new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
