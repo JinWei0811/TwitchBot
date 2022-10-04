@@ -72,7 +72,7 @@ client.on("message", (channel, tags, message, self) => {
     );
   }
 
-  if (message.includes("!富邦") && canDo) {
+  if (message.includes("!富邦應援曲") && canDo) {
     talkSomething(`夠臭我才舔 黑let‘s go 富邦的P眼 反正超強GG 無所畏懼 大師兄都say YEAH HungryPaimon`);
   }
 
@@ -349,8 +349,8 @@ client.on("message", (channel, tags, message, self) => {
       let days = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
       let dateString = `${date.getFullYear()}-${month}-${days}`;
       let talkResult = '';
-      // let dateString = `2022-09-04`;
       let todayGames = GameData.GameData.filter(v => v.GameDate.match(dateString));
+      let teamName = message.replace('!', '');
       for (let game of todayGames) {
         if (game.VisitingTeamName.match(teamName) || game.HomeTeamName.match(teamName)) {
           let form = {
@@ -462,8 +462,9 @@ client.on("message", (channel, tags, message, self) => {
   }
 
   function containCPBLTeam(message) {
+    let teamC = message.replace('!', '');
     for (let team of CPBL) {
-      if (team.name.includes(message)) {
+      if (team.name.includes(teamC)) {
         return true;
       }
     }
