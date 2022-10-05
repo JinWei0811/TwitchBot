@@ -364,13 +364,19 @@ client.on("message", (channel, tags, message, self) => {
             SelectMonth: date.getMonth() + 1,
           }
           let gameLogs = await getGameInfo(form);
-          for (let gameLog of gameLogs) {
+
+          for (let gameLog of gameLogs.GameDetailJson) {
             if (gameLog.GameSno === game.GameSno) {
               if (gameLog.GameStatus == '1' || gameLog.GameStatus == '4' ||
                 gameLog.GameStatus == '5' || gameLog.GameStatus == '6') {
                 talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${DateToString(gameLog.GameDateTimeS)} ${gameLog.HomeTeamName} : ${gameLog.VisitingTeamName}`
               } else {
-                talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
+                let inningInfo = gameLogs.ScoreboardJson[0];
+                let UpDown = '';
+                if (gameLog.GameStatus != '3') {
+                  UpDown = inningInfo.TeamName == gameLog.HomeTeamName ? `局下半${inningInfo.TeamAbbr}進攻` : `局上半${inningInfo.TeamAbbr}進攻`;
+                }
+                talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${UpDown} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
               }
               talkSomething(talkResult);
               return;

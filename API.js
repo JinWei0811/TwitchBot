@@ -185,7 +185,11 @@ function getGameInfo(form) {
                     return;
                 }
                 var temp = JSON.parse(body.toString('utf-8'))
-                resolve(JSON.parse(temp.GameDetailJson));
+                resolve(
+                    {
+                        GameDetailJson: JSON.parse(temp.GameDetailJson),
+                        ScoreboardJson: JSON.parse(temp.ScoreboardJson)
+                    });
             }
         )
     })
