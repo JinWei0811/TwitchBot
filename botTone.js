@@ -374,7 +374,7 @@ client.on("message", (channel, tags, message, self) => {
                 let inningInfo = gameLogs.ScoreboardJson[0];
                 let UpDown = '';
                 if (gameLog.GameStatus != '3') {
-                  UpDown = inningInfo.TeamName == gameLog.HomeTeamName ? `${inningInfo.InningSeq}局下半${inningInfo.TeamAbbr}進攻` : `${inningInfo.InningSeq}局上半${inningInfo.TeamAbbr}進攻`;
+                  UpDown = inningInfo.TeamAbbr == gameLog.HomeTeamName ? `${inningInfo.InningSeq}局下半${inningInfo.TeamAbbr}進攻` : `${inningInfo.InningSeq}局上半${inningInfo.TeamAbbr}進攻`;
                 }
                 talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${UpDown} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
               }
@@ -480,7 +480,9 @@ client.on("message", (channel, tags, message, self) => {
 
   function DateToString(time) {
     let date = new Date(time);
-    let dateString = `${date.getHours()}:${date.getMinutes()}`
+    let hour = date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`
+    let minute = date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`
+    let dateString = `${hour}:${minute}`
     return dateString;
   }
 
