@@ -11,30 +11,23 @@ let headers = {
     "Client-Id": process.env.ClientId,
 };
 
-let options0 = {
-    options: {
-        debug: false,
-    },
+const client0 = new tmi.Client({
+    options: { debug: false },
     identity: {
-        username: process.env.USERNAME2,
-        password: process.env.PASSWORD2,
+        username: process.env.USERNAME1,
+        password: process.env.PASSWORD1,
     },
     channels: ["never_loses"],
-};
+});
 
-let options1 = {
-    options: {
-        debug: false,
-    },
+const client1 = new tmi.Client({
+    options: { debug: false },
     identity: {
-        username: process.env.USERNAME2,
-        password: process.env.PASSWORD2,
+        username: 'f92175bot',
+        password: 'oauth:y3fgik4mkrrivct5z8gxxjao8c0jks',
     },
     channels: ["asiagodtonegg3be0"],
-}
-
-const client0 = new tmi.Client(options0);
-const client1 = new tmi.Client(options1);
+});
 client0.connect();
 client1.connect();
 const listener = app.listen(port, function () { console.log(`Example app listening on port ${port}!`) });
