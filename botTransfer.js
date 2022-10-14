@@ -84,7 +84,7 @@ app.get("/chat.html", function (request, response) {
     response.sendFile("views/chat.html", { root: "." });
 });
 
-app.get("/chat/asiagodtone/", function (request, response) {
+app.get("/chat/chat_asiagodtone.html", function (request, response) {
     response.sendFile("views/chat_asiagodtone.html", { root: "." });
 })
 

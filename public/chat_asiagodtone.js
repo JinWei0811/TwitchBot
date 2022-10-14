@@ -1,4 +1,4 @@
-function myFunction() {
+function myGodtoneFunction() {
     var twitchId = document.getElementById("twitchId").value;
     var content = document.getElementById("content").value;
     var myHeaders = new Headers();
