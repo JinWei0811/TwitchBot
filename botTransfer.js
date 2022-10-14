@@ -11,7 +11,7 @@ let headers = {
     "Client-Id": process.env.ClientId,
 };
 
-let options = {
+let options0 = {
     options: {
         debug: true,
         messagesLogLevel: 'info'
@@ -27,8 +27,26 @@ let options = {
     channels: ["never_loses"],
 };
 
-let client = new tmi.client(options);
-client.connect();
+let options1 = {
+    options: {
+        debug: false,
+        messagesLogLevel: 'info'
+    },
+    connection: {
+        secure: true,
+        reconnect: true,
+    },
+    identity: {
+        username: process.env.USERNAME2,
+        password: process.env.PASSWORD2,
+    },
+    channels: ["asiagodtonegg3be0"],
+}
+
+let client0 = new tmi.client(options0);
+let client1 = new tmi.client(options1);
+client0.connect();
+client1.connect();
 const listener = app.listen(port, function () { console.log(`Example app listening on port ${port}!`) });
 
 app.get("/search", function (request, response) {
@@ -66,6 +84,10 @@ app.get("/chat.html", function (request, response) {
     response.sendFile("views/chat.html", { root: "." });
 });
 
+app.get("/chat/asiagodtone/", function (request, response) {
+    response.sendFile("views/chat_asiagodtone.html", { root: "." });
+})
+
 app.get("/wakeup", function (request, response) {
     console.log("i'm awake");
     response.send("i'm awake");
@@ -74,7 +96,13 @@ app.get("/wakeup", function (request, response) {
 app.post("/chat", function (request, response) {
     let twitchId = request.body.twitchId;
     let content = request.body.content;
-    client.say(`#never_loses`, `${twitchId} ： ${content}`);
+    client0.say(`#never_loses`, `${twitchId} ： ${content}`);
+});
+
+app.post("/chat_asiagodtone", function (request, response) {
+    let twitchId = request.body.twitchId;
+    let content = request.body.content;
+    client1.say(`#asiagodtonegg3be0`, `${twitchId} ： ${content}`);
 });
 
 setInterval(() => {
