@@ -13,12 +13,7 @@ let headers = {
 
 let options0 = {
     options: {
-        debug: true,
-        messagesLogLevel: 'info'
-    },
-    connection: {
-        secure: true,
-        reconnect: true,
+        debug: false,
     },
     identity: {
         username: process.env.USERNAME2,
@@ -30,11 +25,6 @@ let options0 = {
 let options1 = {
     options: {
         debug: false,
-        messagesLogLevel: 'info'
-    },
-    connection: {
-        secure: true,
-        reconnect: true,
     },
     identity: {
         username: process.env.USERNAME2,
