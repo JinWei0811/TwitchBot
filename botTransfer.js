@@ -33,8 +33,8 @@ let options1 = {
     channels: ["asiagodtonegg3be0"],
 }
 
-let client0 = new tmi.client(options0);
-let client1 = new tmi.client(options1);
+const client0 = new tmi.Client(options0);
+const client1 = new tmi.Client(options1);
 client0.connect();
 client1.connect();
 const listener = app.listen(port, function () { console.log(`Example app listening on port ${port}!`) });
