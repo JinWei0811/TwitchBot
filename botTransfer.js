@@ -14,8 +14,8 @@ let headers = {
 const client0 = new tmi.Client({
     options: { debug: false },
     identity: {
-        username: process.env.USERNAME1,
-        password: process.env.PASSWORD1,
+        username: process.env.USERNAME2,
+        password: process.env.PASSWORD2,
     },
     channels: ["never_loses"],
 });
@@ -83,6 +83,11 @@ app.post("/chat_asiagodtone", function (request, response) {
     let content = request.body.content;
     client1.say(`#asiagodtonegg3be0`, `${twitchId} ： ${content}`);
 });
+
+app.post('/chat_wake', function (request, response) {
+    let content = request.body.connect;
+    client0.say(`#never_loses`, '!守靈');
+})
 
 setInterval(() => {
     // fetch("https://twitchbot850811.herokuapp.com/wakeup", {
