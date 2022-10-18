@@ -97,8 +97,8 @@ app.post("/connect", function (request, rsponse) {
         channels: ["asiagodtonegg3be0"],
     });
 
-    // client0.connect();
-    // client1.connect();
+    client0.connect();
+    client1.connect();
 
     client_NL.push({
         username: username,

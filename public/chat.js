@@ -382,7 +382,7 @@ function myFunction() {
     content: content,
   };
 
-  if (twitchId == "" || content == "") {
+  if (content == "") {
     return;
   }
 
@@ -416,7 +416,7 @@ function myGodtoneFunction() {
     content: content,
   };
 
-  if (twitchId == "" || content == "") {
+  if (content == "") {
     return;
   }
 
