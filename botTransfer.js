@@ -136,8 +136,11 @@ app.post("/chat_asiagodtone", function (request, response) {
 });
 
 app.post('/chat_wake', function (request, response) {
-    let content = request.body.connect;
-    client0.say(`#never_loses`, '!守靈');
+    let username = request.body.username;
+    let client = client_NL.find(v => v.username === username).service;
+    if (!_.isNil(client)) {
+        client.say(`#never_loses`, '!守靈');
+    }
 })
 
 setInterval(() => {

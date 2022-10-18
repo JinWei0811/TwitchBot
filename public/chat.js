@@ -403,7 +403,6 @@ function myFunction() {
 
 
 function myGodtoneFunction() {
-  var twitchId = document.getElementById("twitchId1").value;
   var content = document.getElementById("content1").value;
   var username = document.getElementById("twitch_username").value;
   var myHeaders = new Headers();
@@ -436,14 +435,19 @@ function myGodtoneFunction() {
 }
 
 function myWakeFunction() {
+  var username = document.getElementById("twitch_username").value;
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+  var body = {
+    username: username,
+  };
 
   fetch(`https://twitchbot.onrender.com/chat_wake`, {
     method: "POST",
     headers: myHeaders,
     mode: "cors",
     cache: "default",
+    body: JSON.stringify(body)
   })
     .then((response) => response.json())
     .then((result) => { return; });
