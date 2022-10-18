@@ -1,165 +1,3 @@
-var input_NL = document.getElementById('content0');
-var input_GT = document.getElementById('content1');
-var emote_input_NL = document.getElementById('emote0');
-var emote_input_GT = document.getElementById('emote1');
-var emote_div_NL = document.getElementById('emote_NL');
-var emote_div_GT = document.getElementById('emote_GT');
-
-input_NL.addEventListener("keypress", function (event) {
-  if (event.key === 'Enter') {
-    myFunction();
-  }
-});
-
-input_GT.addEventListener("keypress", function (event) {
-  if (event.key === 'Enter') {
-    myGodtoneFunction();
-  }
-});
-
-emote_input_NL.addEventListener("keyup", function (event) {
-  emote_div_NL.innerHTML = '';
-  var emote_result = twitch_emote.filter(v => v.name.toLowerCase().includes(emote_input_NL.value.toLowerCase()));
-  let emote_length = emote_result.length > 5 ? 5 : emote_result.length;
-
-  for (let i = 0; i < emote_length; i++) {
-    let newDiv = document.createElement('div');
-    newDiv.setAttribute('class', 'col-2')
-    let content = `<div class="form-group">
-                    <a onclick="insertEmoteNL('${emote_result[i].name}')" ><img src="${emote_result[i].src}"/></a>
-                  </div>`
-    newDiv.innerHTML = content;
-    emote_div_NL.appendChild(newDiv);
-  }
-});
-
-emote_input_GT.addEventListener('keyup', function (event) {
-  emote_div_GT.innerHTML = '';
-  var emote_result = twitch_emote.filter(v => v.name.toLowerCase().includes(emote_input_GT.value.toLowerCase()));
-  let emote_length = emote_result.length > 5 ? 5 : emote_result.length;
-
-  for (let i = 0; i < emote_length; i++) {
-    let newDiv = document.createElement('div');
-    newDiv.setAttribute('class', 'col-2')
-    let content = `<div class="form-group">
-                    <a onclick="insertEmoteGT('${emote_result[i].name}')" ><img src="${emote_result[i].src}"/></a>
-                  </div>`
-    newDiv.innerHTML = content;
-    emote_div_GT.appendChild(newDiv);
-  }
-})
-
-
-function insertEmoteNL(value) {
-  var content = document.getElementById("content0");
-  var text = content.value;
-  content.value = `${text} ${value}`;
-  clearEmoteInput('NL');
-}
-
-function insertEmoteGT(value) {
-  var content = document.getElementById('content1');
-  var text = content.value;
-  content.value = `${text} ${value}`;
-  clearEmoteInput('GT');
-}
-
-function clearEmoteInput(value) {
-  if (value === 'NL') {
-    emote_div_NL.innerHTML = '';
-    emote_input_NL.value = '';
-  }
-
-  if (value === 'GT') {
-    emote_div_GT.innerHTML = '';
-    emote_input_GT.value = '';
-  }
-}
-
-
-
-function myFunction() {
-  var twitchId = document.getElementById("twitchId0").value;
-  var content = document.getElementById("content0").value;
-  var myHeaders = new Headers();
-
-  myHeaders.append("Content-Type", "application/json");
-
-  var body = {
-    twitchId: twitchId,
-    content: content,
-  };
-
-  if (twitchId == "" || content == "") {
-    return;
-  }
-
-  var grab = document.getElementById("content0");
-  if (grab.value != "") {
-    grab.value = "";
-  }
-
-  fetch(`https://twitchbot.onrender.com/chat`, {
-    method: "POST",
-    headers: myHeaders,
-    mode: "cors",
-    cache: "default",
-    body: JSON.stringify(body),
-  })
-    .then((response) => response.json())
-    .then((result) => { return; });
-}
-
-
-function myGodtoneFunction() {
-  var twitchId = document.getElementById("twitchId1").value;
-  var content = document.getElementById("content1").value;
-  var myHeaders = new Headers();
-
-  myHeaders.append("Content-Type", "application/json");
-
-  var body = {
-    twitchId: twitchId,
-    content: content,
-  };
-
-  if (twitchId == "" || content == "") {
-    return;
-  }
-
-  var grab = document.getElementById("content1");
-  if (grab.value != "") {
-    grab.value = "";
-  }
-
-  fetch(`https://twitchbot.onrender.com/chat_asiagodtone`, {
-    method: "POST",
-    headers: myHeaders,
-    mode: "cors",
-    cache: "default",
-    body: JSON.stringify(body),
-  })
-    .then((response) => response.json())
-    .then((result) => { return; });
-}
-
-function myWakeFunction() {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  fetch(`https://twitchbot.onrender.com/chat_wake`, {
-    method: "POST",
-    headers: myHeaders,
-    mode: "cors",
-    cache: "default",
-  })
-    .then((response) => response.json())
-    .then((result) => { return; });
-}
-
-
-
-
 const twitch_emote = [
   { name: '4Head', src: 'https://static-cdn.jtvnw.net/emoticons/v1/354/1.0' },
   { name: 'ANELE', src: 'https://static-cdn.jtvnw.net/emoticons/v1/3792/1.0' },
@@ -418,3 +256,196 @@ const twitch_emote = [
   { name: 'riPepperonis', src: 'https://static-cdn.jtvnw.net/emoticons/v1/62833/1.0' },
   { name: 'twitchRaid', src: 'https://static-cdn.jtvnw.net/emoticons/v1/62836/1.0' },
 ]
+
+var input_NL = document.getElementById('content0');
+var input_GT = document.getElementById('content1');
+var emote_input_NL = document.getElementById('emote0');
+var emote_input_GT = document.getElementById('emote1');
+var emote_div_NL = document.getElementById('emote_NL');
+var emote_div_GT = document.getElementById('emote_GT');
+
+input_NL.addEventListener("keypress", function (event) {
+  if (event.key === 'Enter') {
+    myFunction();
+  }
+});
+
+input_GT.addEventListener("keypress", function (event) {
+  if (event.key === 'Enter') {
+    myGodtoneFunction();
+  }
+});
+
+emote_input_NL.addEventListener("keyup", function (event) {
+  emote_div_NL.innerHTML = '';
+  var emote_result = twitch_emote.filter(v => v.name.toLowerCase().includes(emote_input_NL.value.toLowerCase()));
+  let emote_length = emote_result.length > 5 ? 5 : emote_result.length;
+
+  for (let i = 0; i < emote_length; i++) {
+    let newDiv = document.createElement('div');
+    newDiv.setAttribute('class', 'col-2')
+    let content = `<div class="form-group">
+                    <a onclick="insertEmoteNL('${emote_result[i].name}')" ><img src="${emote_result[i].src}"/></a>
+                  </div>`
+    newDiv.innerHTML = content;
+    emote_div_NL.appendChild(newDiv);
+  }
+});
+
+emote_input_GT.addEventListener('keyup', function (event) {
+  emote_div_GT.innerHTML = '';
+  var emote_result = twitch_emote.filter(v => v.name.toLowerCase().includes(emote_input_GT.value.toLowerCase()));
+  let emote_length = emote_result.length > 5 ? 5 : emote_result.length;
+
+  for (let i = 0; i < emote_length; i++) {
+    let newDiv = document.createElement('div');
+    newDiv.setAttribute('class', 'col-2')
+    let content = `<div class="form-group">
+                    <a onclick="insertEmoteGT('${emote_result[i].name}')" ><img src="${emote_result[i].src}"/></a>
+                  </div>`
+    newDiv.innerHTML = content;
+    emote_div_GT.appendChild(newDiv);
+  }
+})
+
+
+function insertEmoteNL(value) {
+  var content = document.getElementById("content0");
+  var text = content.value;
+  content.value = `${text} ${value}`;
+  content.focus();
+  clearEmoteInput('NL');
+}
+
+function insertEmoteGT(value) {
+  var content = document.getElementById('content1');
+  var text = content.value;
+  content.value = `${text} ${value}`;
+  content.focus();
+  clearEmoteInput('GT');
+}
+
+function clearEmoteInput(value) {
+  if (value === 'NL') {
+    emote_div_NL.innerHTML = '';
+    emote_input_NL.value = '';
+  }
+
+  if (value === 'GT') {
+    emote_div_GT.innerHTML = '';
+    emote_input_GT.value = '';
+  }
+}
+
+function myConnectFunction() {
+  var username = document.getElementById("twitch_username");
+  var password = document.getElementById("twitch_password");
+  var status = document.getElementById("connect_status");
+  var div_content = document.getElementById("div_content");
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var body = {
+    'username': username.value,
+    'password': password.value,
+  }
+
+  fetch(`https://twitchbot.onrender.com/connect`, {
+    method: "POST",
+    headers: myHeaders,
+    mode: "cors",
+    cache: "default",
+    body: JSON.stringify(body),
+  })
+    .then(response => response.json())
+    .then(result => {
+      if (result.status == 'Connected') {
+        // username.disabled = true;
+        // password.disabled = true;
+        status.innerText = '狀態： 取得用戶資訊成功'
+        div_content.style.visibility = 'visible';
+      } else {
+        status.innerText = '狀態： 取得用戶資訊失敗'
+      }
+    });
+}
+
+function myFunction() {
+  var twitchId = document.getElementById("twitchId0").value;
+  var content = document.getElementById("content0").value;
+  var username = document.getElementById("twitch_username").value;
+  var myHeaders = new Headers();
+
+  myHeaders.append("Content-Type", "application/json");
+
+  var body = {
+    username: username,
+    content: content,
+  };
+
+  if (twitchId == "" || content == "") {
+    return;
+  }
+
+  var grab = document.getElementById("content0");
+  if (grab.value != "") {
+    grab.value = "";
+  }
+
+  fetch(`https://twitchbot.onrender.com/chat`, {
+    method: "POST",
+    headers: myHeaders,
+    mode: "cors",
+    cache: "default",
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => { return; });
+}
+
+
+function myGodtoneFunction() {
+  var twitchId = document.getElementById("twitchId1").value;
+  var content = document.getElementById("content1").value;
+  var username = document.getElementById("twitch_username").value;
+  var myHeaders = new Headers();
+
+  myHeaders.append("Content-Type", "application/json");
+
+  var body = {
+    username: username,
+    content: content,
+  };
+
+  if (twitchId == "" || content == "") {
+    return;
+  }
+
+  var grab = document.getElementById("content1");
+  if (grab.value != "") {
+    grab.value = "";
+  }
+
+  fetch(`https://twitchbot.onrender.com/chat_asiagodtone`, {
+    method: "POST",
+    headers: myHeaders,
+    mode: "cors",
+    cache: "default",
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((result) => { return; });
+}
+
+function myWakeFunction() {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  fetch(`https://twitchbot.onrender.com/chat_wake`, {
+    method: "POST",
+    headers: myHeaders,
+    mode: "cors",
+    cache: "default",
+  })
+    .then((response) => response.json())
+    .then((result) => { return; });
+}

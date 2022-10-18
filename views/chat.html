@@ -11,93 +11,112 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="col-sm-6 col-md-6 col-lg-6">
-        <iframe id="twitch-chat-embed" src="https://www.twitch.tv/embed/never_loses/chat?parent=twitchbot.onrender.com"
-          height="500" width="350">
-        </iframe>
-      </div>
-      <div class="col-sm-6 col-md-6 col-lg-6">
-        <iframe id="twitch-chat-embed"
-          src="https://www.twitch.tv/embed/asiagodtonegg3be0/chat?parent=twitchbot.onrender.com" height="500"
-          width="350">
-        </iframe>
-      </div>
-      <div class="col-4 form-row my-1">
-        <div class="col-3">
-          <label>顯示名稱</label>
+      <div class="col-12 form-row">
+        <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+          <span>連線帳號</span>
+          <input type="text" class="form-control" id="twitch_username">
         </div>
-        <div class="col-9">
-          <input type="text" class="form-control" name="twitchId" id="twitchId0" />
+        <div class="col-sm-6 col-md-6 col-lg-6 form-group">
+          <span class="mr-2">Twitch Ouath</span>
+          <a href="https://twitchapps.com/tmi/" target="_blank"><span> Generate</span></a>
+          <input type="text" class="form-control" id="twitch_password">
         </div>
-      </div>
-      <div class="col-2"></div>
-      <div class="col-4 form-row my-1">
-        <div class="col-3">
-          <label>顯示名稱</label>
-        </div>
-        <div class="col-9">
-          <input type="text" class="form-control" name="twitchId" id="twitchId1" />
-        </div>
-      </div>
-      <div class="col-4 form-row">
-        <div class="col-3">
-          <label>輸入內容</label>
-        </div>
-        <div class="col-9">
-          <input type="text" class="form-control" name="content" id="content0" />
-        </div>
-      </div>
-      <div class="col-2"></div>
-      <div class="col-4 form-row">
-        <div class="col-3">
-          <label>輸入內容</label>
-        </div>
-        <div class="col-9">
-          <input type="text" class="form-control" name="content" id="content1" />
-        </div>
-      </div>
-      <div class="col-4 form-row my-1">
-        <div class="col-3">
-          <label>Emote</label>
-        </div>
-        <div class="col-9">
-          <input type="text" class="form-control" id="emote0">
-          <div class="col-12 form-row" id="emote_NL">
-          </div>
-        </div>
-      </div>
-      <div class="col-2"></div>
-
-      <div class="col-4 form-row my-1">
-        <div class="col-3">
-          <label>Emote</label>
-        </div>
-        <div class="col-9">
-          <input type="text" class="form-control" id="emote1">
-          <div class="col-12 form-row" id="emote_GT">
-          </div>
-        </div>
-      </div>
-      <div class="col-4 form-row">
         <div class="col-6"></div>
-        <div class="col-3">
-          <button class="btn btn-primary" onclick="myWakeFunction()">守靈</button>
+        <div class="col-4">
+          <label id="connect_status">狀態</label>
         </div>
-        <div class="col-3">
-          <button class="btn btn-primary" onclick="myFunction()">送出</button>
-        </div>
-      </div>
-      <div class="col-2"></div>
-      <div class="col-4 form-row">
-        <div class="col-9"></div>
-        <div class="col-3">
-          <button class="btn btn-primary" onclick="myGodtoneFunction()">送出</button>
+        <div class="col-2">
+          <button class="btn btn-primary" onclick="myConnectFunction()">連線(Connect)</button>
         </div>
       </div>
+      <div class="p-0 col-12 form-row" id="div_content" style="visibility: hidden;">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <iframe id="twitch-chat-embed"
+            src="https://www.twitch.tv/embed/never_loses/chat?parent=twitchbot.onrender.com" height="500">
+          </iframe>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <iframe id="twitch-chat-embed"
+            src="https://www.twitch.tv/embed/asiagodtonegg3be0/chat?parent=twitchbot.onrender.com" height="500">
+          </iframe>
+        </div>
+        <div class="col-4 form-row my-1">
+          <div class="col-3">
+            <label>顯示名稱</label>
+          </div>
+          <div class="col-9">
+            <input type="text" class="form-control" name="twitchId" id="twitchId0" />
+          </div>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-4 form-row my-1">
+          <div class="col-3">
+            <label>顯示名稱</label>
+          </div>
+          <div class="col-9">
+            <input type="text" class="form-control" name="twitchId" id="twitchId1" />
+          </div>
+        </div>
+        <div class="col-4 form-row">
+          <div class="col-3">
+            <label>輸入內容</label>
+          </div>
+          <div class="col-9">
+            <input list="emote_list_NL" type="text" class="form-control" name="content" id="content0" />
+            <datalist id="emote_list_NL"></datalist>
+          </div>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-4 form-row">
+          <div class="col-3">
+            <label>輸入內容</label>
+          </div>
+          <div class="col-9">
+            <input type="text" class="form-control" name="content" id="content1" />
+          </div>
+        </div>
+        <div class="col-4 form-row my-1">
+          <div class="col-3">
+            <label>Emote</label>
+          </div>
+          <div class="col-9">
+            <input type="text" class="form-control" id="emote0">
+            <div class="col-12 form-row" id="emote_NL">
+            </div>
+          </div>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-4 form-row my-1">
+          <div class="col-3">
+            <label>Emote</label>
+          </div>
+          <div class="col-9">
+            <input type="text" class="form-control" id="emote1">
+            <div class="col-12 form-row" id="emote_GT">
+            </div>
+          </div>
+        </div>
+        <div class="col-4 form-row mt-1">
+          <div class="col-6"></div>
+          <div class="col-3">
+            <button class="btn btn-primary" onclick="myWakeFunction()">守靈</button>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-primary" onclick="myFunction()">送出</button>
+          </div>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-4 form-row mt-1">
+          <div class="col-9"></div>
+          <div class="col-3">
+            <button class="btn btn-primary" onclick="myGodtoneFunction()">送出</button>
+          </div>
+        </div>
 
-      <!-- <div class="col-12">
+        <!-- <div class="col-12">
         <label>如果可以希望可以微修改顯示名稱(與原名稱不同) 😅 請注意言論，保護代言機器人 😅</label>
       </div> -->
+      </div>
     </div>
   </div>
 

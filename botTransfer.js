@@ -11,25 +11,28 @@ let headers = {
     "Client-Id": process.env.ClientId,
 };
 
-const client0 = new tmi.Client({
-    options: { debug: false },
-    identity: {
-        username: process.env.USERNAME2,
-        password: process.env.PASSWORD2,
-    },
-    channels: ["never_loses"],
-});
+let client_NL = [];
+let client_GT = [];
 
-const client1 = new tmi.Client({
-    options: { debug: false },
-    identity: {
-        username: 'f92175bot',
-        password: 'oauth:y3fgik4mkrrivct5z8gxxjao8c0jks',
-    },
-    channels: ["asiagodtonegg3be0"],
-});
-client0.connect();
-client1.connect();
+// const client0 = new tmi.Client({
+//     options: { debug: false },
+//     identity: {
+//         username: process.env.USERNAME2,
+//         password: process.env.PASSWORD2,
+//     },
+//     channels: ["never_loses"],
+// });
+
+// const client1 = new tmi.Client({
+//     options: { debug: false },
+//     identity: {
+//         username: 'f92175bot',
+//         password: 'oauth:y3fgik4mkrrivct5z8gxxjao8c0jks',
+//     },
+//     channels: ["asiagodtonegg3be0"],
+// });
+// client0.connect();
+// client1.connect();
 const listener = app.listen(port, function () { console.log(`Example app listening on port ${port}!`) });
 
 app.get("/search", function (request, response) {
@@ -72,16 +75,64 @@ app.get("/wakeup", function (request, response) {
     response.send("i'm awake");
 });
 
+app.post("/connect", function (request, rsponse) {
+    let username = request.body.username;
+    let password = request.body.password;
+
+    let client0 = new tmi.Client({
+        options: { debug: false },
+        identity: {
+            username: username,
+            password: password,
+        },
+        channels: ["never_loses"],
+    });
+
+    let client1 = new tmi.Client({
+        options: { debug: false },
+        identity: {
+            username: username,
+            password: password,
+        },
+        channels: ["asiagodtonegg3be0"],
+    });
+
+    // client0.connect();
+    // client1.connect();
+
+    client_NL.push({
+        username: username,
+        service: client0,
+    });
+
+    client_GT.push({
+        username: username,
+        service: client1,
+    })
+
+    rsponse.send({
+        status: 'Connected'
+    })
+});
+
 app.post("/chat", function (request, response) {
-    let twitchId = request.body.twitchId;
+    let username = request.body.username;
     let content = request.body.content;
-    client0.say(`#never_loses`, `${twitchId} ： ${content}`);
+    let client = client_NL.find(v => v.username === username).service
+    if (!_.isNil(client)) {
+        client.say(`#never_loses`, `${content}`);
+    }
+    // client0.say(`#never_loses`, `${twitchId} ： ${content}`);
 });
 
 app.post("/chat_asiagodtone", function (request, response) {
-    let twitchId = request.body.twitchId;
+    let username = request.body.username;
     let content = request.body.content;
-    client1.say(`#asiagodtonegg3be0`, `${twitchId} ： ${content}`);
+    let client = client_GT.find(v => v.username === username).service;
+    if (!_.isNil(client)) {
+        client.say(`#asiagodtonegg3be0`, `${content}`);
+    }
+    // client1.say(`#asiagodtonegg3be0`, `${twitchId} ： ${content}`);
 });
 
 app.post('/chat_wake', function (request, response) {
