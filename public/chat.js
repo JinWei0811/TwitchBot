@@ -370,7 +370,6 @@ function myConnectFunction() {
 }
 
 function myFunction() {
-  var twitchId = document.getElementById("twitchId0").value;
   var content = document.getElementById("content0").value;
   var username = document.getElementById("twitch_username").value;
   var myHeaders = new Headers();
