@@ -80,7 +80,7 @@ app.post("/connect", function (request, rsponse) {
     let password = request.body.password;
 
     let client0 = new tmi.Client({
-        options: { debug: false },
+        options: { debug: true },
         identity: {
             username: username,
             password: password,
@@ -89,7 +89,7 @@ app.post("/connect", function (request, rsponse) {
     });
 
     let client1 = new tmi.Client({
-        options: { debug: false },
+        options: { debug: true },
         identity: {
             username: username,
             password: password,
