@@ -212,6 +212,9 @@ client.on("message", (channel, tags, message, self) => {
 
   if (containNBATeam(message)) {
     (async () => {
+      if(message.includes('!今日天氣')){
+        message = '!勇士'
+      }
       let team_code = NBA.find((v) =>
         v.teamCH.includes(message.split("!")[1])
       ).teamEN;
