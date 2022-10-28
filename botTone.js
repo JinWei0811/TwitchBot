@@ -1,3 +1,4 @@
+import("./botTransfer.js");
 import tmi from "tmi.js";
 import _ from "lodash";
 import * as teams from "./SportTeam.js";
