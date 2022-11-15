@@ -210,14 +210,13 @@ client.on("message", (channel, tags, message, self) => {
     })();
   }
 
-  if (containNBATeam(message)) {
+  if (message.includes('!NBA')) {
     (async () => {
-      if(message.includes('!今日天氣')){
-        message = '!勇士'
+      if (message.includes('!今日天氣')) {
+        message = '!NBA 勇士'
       }
-      let team_code = NBA.find((v) =>
-        v.teamCH.includes(message.split("!")[1])
-      ).teamEN;
+      let message_team_name = message.split('!NBA')[1].trim();
+      let team_code = NBA.find((v) => v.teamCH.includes(message.split('!NBA')[1].trim())).teamEN;
       let NBA_info = await fetchNBA();
       let games = NBA_info.scoreboard.games;
       let talkResult = "";
@@ -250,9 +249,12 @@ client.on("message", (channel, tags, message, self) => {
             }
             talkResult = `@${chanName}, ${gameStatus}  ${homeTeam} ${homeScore} ： ${awayTeam} ${awayScore} `;
             talkSomething(talkResult);
+            return;
           }
         }
       }
+      talkResult = `@${chanName}, 今日${message_team_name}無比賽`;
+      talkSomething(talkResult);
     })();
   }
 
@@ -403,72 +405,71 @@ client.on("message", (channel, tags, message, self) => {
 
   function containNBATeam(message) {
     return (
-      message.includes("!塞爾提克") ||
-      message.includes("!籃網") ||
-      message.includes("!尼克") ||
-      message.includes("!76人") ||
-      message.includes("!暴龍") ||
-      message.includes("!公牛") ||
-      message.includes("!騎士") ||
-      message.includes("!活塞") ||
-      message.includes("!溜馬") ||
-      message.includes("!公鹿") ||
-      message.includes("!老鷹") ||
-      message.includes("!鵜鶘") ||
-      message.includes("!熱火") ||
-      message.includes("!魔術") ||
-      message.includes("!巫師") ||
-      message.includes("!獨行俠") ||
-      message.includes("!灰熊") ||
-      message.includes("!火箭") ||
-      message.includes("!黃蜂") ||
-      message.includes("!馬刺") ||
-      message.includes("!金塊") ||
-      message.includes("!灰狼") ||
-      message.includes("!拓荒者") ||
-      message.includes("!活塞") ||
-      message.includes("!爵士") ||
-      message.includes("!勇士") ||
-      message.includes("!快艇") ||
-      message.includes("!湖人") ||
-      message.includes("!太陽") ||
-      message.includes("!國王") ||
-      message.includes("!今日天氣")
+      message.includes("塞爾提克") ||
+      message.includes("籃網") ||
+      message.includes("尼克") ||
+      message.includes("76人") ||
+      message.includes("暴龍") ||
+      message.includes("公牛") ||
+      message.includes("騎士") ||
+      message.includes("活塞") ||
+      message.includes("溜馬") ||
+      message.includes("公鹿") ||
+      message.includes("老鷹") ||
+      message.includes("黃蜂") ||
+      message.includes("熱火") ||
+      message.includes("魔術") ||
+      message.includes("巫師") ||
+      message.includes("金塊") ||
+      message.includes("灰狼") ||
+      message.includes("雷霆") ||
+      message.includes("拓荒者") ||
+      message.includes("爵士") ||
+      message.includes("勇士") ||
+      message.includes("快艇") ||
+      message.includes("湖人") ||
+      message.includes("太陽") ||
+      message.includes("國王") ||
+      message.includes("獨行俠") ||
+      message.includes("火箭") ||
+      message.includes("灰熊") ||
+      message.includes("鵜鶘") ||
+      message.includes("馬刺")
     );
   }
 
   function containMLBTeam(message) {
     return (
-      message == "!金鶯" ||
-      message == "!紅襪" ||
-      message == "!洋基" ||
-      message == "!光芒" ||
-      message == "!藍鳥" ||
-      message == "!老虎" ||
-      message == "!皇家" ||
-      message == "!守護者" ||
-      message == "!雙城" ||
-      message == "!白襪" ||
-      message == "!天使" ||
-      message == "!太空人" ||
-      message == "!運動家" ||
-      message == "!水手" ||
-      message == "!遊騎兵" ||
-      message == "!大都會" ||
-      message == "!國民" ||
-      message == "!費城人" ||
-      message == "!海盜" ||
-      message == "!紅雀" ||
-      message == "!釀酒人" ||
-      message == "!響尾蛇" ||
-      message == "!落磯" ||
-      message == "!道奇" ||
-      message == "!教士" ||
-      message == "!巨人" ||
-      message == "!小熊" ||
-      message == "!紅人" ||
-      message == "!馬林魚"
-      //|| message == "!MLB勇士"
+      message == "金鶯" ||
+      message == "紅襪" ||
+      message == "洋基" ||
+      message == "光芒" ||
+      message == "藍鳥" ||
+      message == "老虎" ||
+      message == "皇家" ||
+      message == "守護者" ||
+      message == "雙城" ||
+      message == "白襪" ||
+      message == "天使" ||
+      message == "太空人" ||
+      message == "運動家" ||
+      message == "水手" ||
+      message == "遊騎兵" ||
+      message == "大都會" ||
+      message == "國民" ||
+      message == "費城人" ||
+      message == "海盜" ||
+      message == "紅雀" ||
+      message == "釀酒人" ||
+      message == "響尾蛇" ||
+      message == "落磯" ||
+      message == "道奇" ||
+      message == "教士" ||
+      message == "巨人" ||
+      message == "小熊" ||
+      message == "紅人" ||
+      message == "馬林魚" ||
+      message == "勇士"
     );
   }
 
