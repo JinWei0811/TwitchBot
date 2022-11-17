@@ -210,8 +210,11 @@ client.on("message", (channel, tags, message, self) => {
     })();
   }
 
-  if (message.includes('!NBA')) {
+  if (message.includes('!NBA') || message.includes('!今日天氣')) {
     (async () => {
+      if (containNBATeam(message)) {
+        return
+      }
       if (message.includes('!今日天氣')) {
         message = '!NBA 勇士'
       }
@@ -258,10 +261,13 @@ client.on("message", (channel, tags, message, self) => {
     })();
   }
 
-  if (containMLBTeam(message)) {
+  if (message.includes('!MLB')) {
     (async () => {
+      if (containMLBTeam(message)) {
+        return;
+      }
       let teamId = MLB.find((v) =>
-        v.teamCH.includes(message.split("!")[1])
+        v.teamCH.includes(message.split("!MLB")[1].trim())
       ).teamId;
       let MLB_info = await fetchMLB();
       let games = MLB_info.dates[0].games;

@@ -22,7 +22,7 @@ export const NBA = [
   { teamCH: "金州勇士", teamEN: "GSW" },
   { teamCH: "洛杉磯快艇", teamEN: "LAC" },
   { teamCH: "洛杉磯湖人", teamEN: "LAL" },
-  { teanCH: "鳳凰城太陽", teamEN: "PHX" },
+  { teamCH: "鳳凰城太陽", teamEN: "PHX" },
   { teamCH: "沙加緬度國王", teamEN: "SAC" },
   { teamCH: "達拉斯獨行俠", teamEN: "DAL" },
   { teamCH: "休士頓火箭", teamEN: "HOU" },
