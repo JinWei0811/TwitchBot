@@ -212,7 +212,7 @@ client.on("message", (channel, tags, message, self) => {
 
   if (message.includes('!NBA') || message.includes('!今日天氣')) {
     (async () => {
-      if (containNBATeam(message)) {
+      if (!containNBATeam(message)) {
         return
       }
       if (message.includes('!今日天氣')) {
@@ -263,7 +263,7 @@ client.on("message", (channel, tags, message, self) => {
 
   if (message.includes('!MLB')) {
     (async () => {
-      if (containMLBTeam(message)) {
+      if (!containMLBTeam(message)) {
         return;
       }
       let teamId = MLB.find((v) =>
