@@ -1,6 +1,6 @@
 export const NBA = [
   { teamCH: "波士頓塞爾提克", teamEN: "BOS" },
-  { teamCH: "布魯克林籃網", teamEN: "NJ" },
+  { teamCH: "布魯克林籃網", teamEN: "BKN" },
   { teamCH: "紐約尼克", teamEN: "NY" },
   { teamCH: "費城76人", teamEN: "PHI" },
   { teamCH: "多倫多暴龍", teamEN: "TOR" },
