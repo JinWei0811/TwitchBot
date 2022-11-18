@@ -210,7 +210,7 @@ client.on("message", (channel, tags, message, self) => {
     })();
   }
 
-  if (message.toLowerCase.includes('!nba') || message.includes('!今日天氣')) {
+  if (message.toLowerCase().includes('!nba') || message.includes('!今日天氣')) {
     (async () => {
       if (!containNBATeam(message)) {
         return
