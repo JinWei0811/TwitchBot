@@ -1,15 +1,27 @@
 Twitch Bot
-> A bare bones example on how to add a [Twitch](https://twitch.tv) bot to your Twitch chat using [tmi.js](https://tmijs.org/) and **Glitch**.
 
-What you need
----------------- - -  -
- - First, your own [Twitch.tv account](https://twitch.tv/signup).
- - Log out (or use different browser) after creating your account.
- - Create an [account](https://twitch.tv/signup) for your bot to use.
- - Stay logged in to the bot account and continue to the next step.
- - Visit [TwitchApps/TMI](https://twitchapps.com/tmi/) to generate and oauth token
- - Edit .env file add the USERNAME and oauth PASSWORD for your bot.
- - After a moment or two you should see your bot join [twitch.tv/shinbot/chat](twitch.tv/shinbot/chat)
- - Edit index.js line 26 `channels: ["shinbot"]` to point to your channel, this is the channel you want to bot to join.
- - I have included two example commands both currently pointing to the `shinbot` channel you should update those too. To add more simply extend out the switch statement. For further documentation see [tmi.js](https://docs.tmijs.org/).
- - Follow me on [Twitch](https://twitch.tv/shindakun).
+此機器人功能是基於 tmi.js 連線於 twitch 聊天室進行自動回話。功能介紹：
+
+1. 報時功能
+2. 確診人數(已失效)
+3. 股票現價資訊
+4. Twitch 追隨時間
+5. 查詢 Twitch 他人追蹤
+6. NBA隊伍對戰資訊
+7. MLB隊伍對戰資訊
+8. CPBL隊伍對戰資訊
+
+<hr>
+
+以下爬蟲、Fetch API的功能，可於 API.js 進行翻閱。
+
+## cheerio 爬蟲
+- 確診人數：取得 www.cdc.gov.tw 的新聞頁面，取出日期及確診人數。(已失效)
+
+## fetch 外部API
+- 股票資訊：利用 yahoo stock 的相關API輸入股票代碼進行查詢。
+- Twitch追隨時間：利用 twitch 的相關API進行查詢。
+- 查詢 Twitch 他人追蹤：利用 twitch 的相關API進行查詢。
+- NBA隊伍對戰資訊：利用 cdn.nba.com 的相關API進行查詢。
+- MLB隊伍對戰資訊：利用 statsapi.mlb.com 的相關API進行查詢。
+- CPBL隊伍對戰資訊：利用 www.cbpl.com.tw 的相關API進行查詢。
