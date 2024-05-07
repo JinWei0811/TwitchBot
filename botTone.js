@@ -37,11 +37,22 @@ let streamerList = [
   },
 ];
 
+let formatter = new Intl.DateTimeFormat("zh-TW", {
+  timeZone: "Asia/Taipei",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hourCycle: "h23", // 使用 24 小時制
+});
+
 const client = new tmi.Client({
   options: { debug: true },
   identity: {
-    username: process.env.USERNAME3,
-    password: process.env.PASSWORD3,
+    username: "raccattack_bott",
+    password: "oauth:t08nxhw2ubynnz81gg4zk2j9hafibh",
   },
   channels: ["asiagodtonegg3be0"],
 });
@@ -53,38 +64,39 @@ client.on("message", (channel, tags, message, self) => {
   let chanName = `${tags["display-name"]}`;
   let username = chanName;
 
-  if (message.includes("!咕嚕") && canDo) {
+  if (message.includes("!咕嚕") && canDo && false) {
     let date = new Date(
       new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
     );
     talkSomething(`今天${weekday[date.getDay()]}，咕嚕貝果乾 RaccAttack`);
   }
 
-  if (message.includes("!喵叫") && canDo) {
+  if (message.includes("!喵叫") && canDo && false) {
     let date = new Date(
       new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
     );
     talkSomething(`今天${weekday[date.getDay()]}，喵叫貝果乾哭 BibleThump `);
   }
 
-  if (message.includes("!魚貓") && canDo) {
+  if (message.includes("!魚貓") && canDo && false) {
     talkSomething(
       `我是快樂的搬磚工人 GivePLZ 🧱 我是快樂的夜班保全 GivePLZ 🚪 我是快樂的工地主任 👷 我是快樂的冷凍小魚 GivePLZ 🐟`
     );
   }
 
-  if (message.includes("!富邦應援曲") && canDo) {
-    talkSomething(`夠臭我才舔 黑let‘s go 富邦的P眼 反正超強GG 無所畏懼 大師兄都say YEAH HungryPaimon`);
+  if (message.includes("!富邦應援曲") && canDo && false) {
+    talkSomething(
+      `夠臭我才舔 黑let‘s go 富邦的P眼 反正超強GG 無所畏懼 大師兄都say YEAH HungryPaimon`
+    );
   }
 
   if (message.includes("!有驚無險") && canDo) {
-    let date = new Date(
-      new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
-    );
-    talkSomething(`@${chanName} 有驚無險，又到${date.getHours()}點 GivePLZ `);
+    let nowTimes = nowDates();
+
+    talkSomething(`@${chanName} 有驚無險，又到${nowTimes.hour}點 GivePLZ `);
   }
 
-  if (message === "!確診人數" && canDo) {
+  if (message === "!確診人數" && canDo && false) {
     (async () => {
       let nowDate = new Date(
         new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
@@ -101,9 +113,11 @@ client.on("message", (channel, tags, message, self) => {
       if (_.isEmpty(covidResult)) {
         talkResult = `@${chanName}, 今日人數尚未公布。  資料來源:衛福部疾管署新聞稿 RaccAttack`;
       } else {
-        talkResult = `@${chanName}, 感謝時中台北市長候選人 ThankEgg  ${covidResult.date.getMonth() + 1
-          }/${covidResult.date.getDate()} ${covidResult.title
-          }。 資料來源:衛福部疾管署新聞稿`;
+        talkResult = `@${chanName}, 感謝時中台北市長候選人 ThankEgg  ${
+          covidResult.date.getMonth() + 1
+        }/${covidResult.date.getDate()} ${
+          covidResult.title
+        }。 資料來源:衛福部疾管署新聞稿`;
       }
       talkSomething(talkResult);
     })();
@@ -118,9 +132,7 @@ client.on("message", (channel, tags, message, self) => {
         talkSomething(talkResult);
       }
       let stock_id = stock_list[0];
-      let date = new Date(
-        new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
-      );
+      let nowTimes = nowDates();
       let stock = await getStock(stock_id, ".TW");
       if (_.isEmpty(stock)) {
         stock = await getStock(stock_id, "");
@@ -132,23 +144,20 @@ client.on("message", (channel, tags, message, self) => {
       }
       switch (stock[0].changeStatus) {
         case "equal":
-          talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟡 有驚無險 GivePLZ ${stock[0].symbolName
-            } 平盤 ${stock[0].price}元, 白忙一場`;
+          talkResult = `@${chanName}, ${nowTimes.hour}:${nowTimes.min}:${nowTimes.sec}  🟡 有驚無險 GivePLZ ${stock[0].symbolName} 平盤 ${stock[0].price.raw}元, 白忙一場`;
           break;
         case "down":
-          talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🟢 逢低加碼 SwiftRage ${stock[0].symbolName
-            } ${stock[0].change} 跌到 ${stock[0].price}元 PoroSad`;
+          talkResult = `@${chanName}, ${nowTimes.hour}:${nowTimes.min}:${nowTimes.sec}  🟢 逢低加碼 SwiftRage ${stock[0].symbolName} ${stock[0].change.raw} 跌到 ${stock[0].price.raw}元 PoroSad`;
           break;
         case "up":
-          talkResult = `@${chanName},${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}  🔴 有驚無險 GivePLZ ${stock[0].symbolName
-            } +${stock[0].change} 漲到 ${stock[0].price}元 MingLee`;
+          talkResult = `@${chanName}, ${nowTimes.hour}:${nowTimes.min}:${nowTimes.sec}  🔴 有驚無險 GivePLZ ${stock[0].symbolName} +${stock[0].change.raw} 漲到 ${stock[0].price.raw}元 MingLee`;
           break;
       }
       talkSomething(talkResult);
     })();
   }
 
-  if (message.includes("!追隨")) {
+  if (message.includes("!追隨") && false) {
     (async () => {
       let to_id = "";
       let to_name = "";
@@ -174,13 +183,14 @@ client.on("message", (channel, tags, message, self) => {
         return;
       }
       let follow_date = new Date(follow_info.data[0].followed_at);
-      talkResult = `@${chanName} 您從${follow_date.getFullYear()}年${follow_date.getMonth() + 1
-        }月${follow_date.getDate()}日開始追隨${to_name}`;
+      talkResult = `@${chanName} 您從${follow_date.getFullYear()}年${
+        follow_date.getMonth() + 1
+      }月${follow_date.getDate()}日開始追隨${to_name}`;
       talkSomething(talkResult);
     })();
   }
 
-  if (message.includes("!稽查")) {
+  if (message.includes("!稽查") && false) {
     (async () => {
       let user_name = message.match(/[A-Za-z0-9_]+/);
       let talkResult = "";
@@ -210,20 +220,98 @@ client.on("message", (channel, tags, message, self) => {
     })();
   }
 
-  if (message.toLowerCase().includes('!nba') || message.includes('!今日天氣')) {
+  if (message.includes("!") && containCPBLTeam(message)) {
     (async () => {
-      if (!containNBATeam(message)) {
-        return
+      let date = new Date(
+        new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
+      );
+      let month =
+        date.getMonth() + 1 > 9
+          ? date.getMonth() + 1
+          : `0${date.getMonth() + 1}`;
+      let days = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+      let dateString = `${date.getFullYear()}-${month}-${days}`;
+      let talkResult = "";
+      let todayGames = GameData.GameData.filter((v) =>
+        v.GameDate.match(dateString)
+      );
+      let teamName = message.replace("!", "");
+      for (let game of todayGames) {
+        if (
+          game.VisitingTeamName.match(teamName) ||
+          game.HomeTeamName.match(teamName)
+        ) {
+          let form = {
+            GameSno: game.GameSno,
+            KindCode: game.KindCode,
+            Year: game.Year,
+            PrevOrNext: "",
+            PresentStatus: "",
+            SelectKindCode: game.KindCode,
+            SelectYear: date.getFullYear(),
+            SelectMonth: date.getMonth() + 1,
+          };
+          let gameLogs = await getGameInfo(form);
+
+          for (let gameLog of gameLogs.GameDetailJson) {
+            if (gameLog.GameSno === game.GameSno) {
+              if (
+                gameLog.GameStatus == "1" ||
+                gameLog.GameStatus == "4" ||
+                gameLog.GameStatus == "5" ||
+                gameLog.GameStatus == "6"
+              ) {
+                talkResult = `@${chanName}, ${
+                  gameLog.GameStatusChi
+                } ${DateToString(gameLog.GameDateTimeS)} ${
+                  gameLog.HomeTeamName
+                } : ${gameLog.VisitingTeamName}`;
+              } else {
+                let inningInfo = gameLogs.ScoreboardJson[0];
+                let UpDown = "";
+                if (gameLog.GameStatus != "3") {
+                  UpDown =
+                    inningInfo.TeamAbbr == gameLog.HomeTeamName
+                      ? `${inningInfo.InningSeq}局下半${inningInfo.TeamAbbr}進攻`
+                      : `${inningInfo.InningSeq}局上半${inningInfo.TeamAbbr}進攻`;
+                }
+                talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${UpDown} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`;
+              }
+              talkSomething(talkResult);
+              return;
+            }
+          }
+          talkResult = `@${chanName}, 今日${message}無比賽`;
+          talkSomething(talkResult);
+        }
       }
-      if (message.includes('!今日天氣')) {
-        message = '!NBA 勇士'
+    })();
+  }
+
+  if (
+    (containNBATeam(message) && message.toLowerCase().includes("nba")) ||
+    message.includes("!今日天氣")
+  ) {
+    (async () => {
+      if (message.includes("!今日天氣")) {
+        message = "!NBA 勇士";
       }
-      let message_team_name = message.split('!NBA')[1].trim();
-      let team_code = NBA.find((v) => v.teamCH.includes(message.split('!NBA')[1].trim())).teamEN;
-      let NBA_info = await fetchNBA();
+      let team_code = NBA.find((v) =>
+        v.teamCH.includes(message.split("!NBA")[1].trim())
+      )?.teamEN;
+      let NBA_info;
+      try {
+        NBA_info = await fetchNBA();
+      } catch (e) {
+        console.log(`fetchNBA error ${e}`);
+      }
       let games = NBA_info.scoreboard.games;
       let talkResult = "";
+      let count = 0;
       for (let item of games) {
+        if (count) {
+          break;
+        }
         if (item.gameCode.includes(team_code)) {
           let homeTeam = NBA.find(
             (v) => v.teamEN == item.homeTeam.teamTricode
@@ -251,38 +339,50 @@ client.on("message", (channel, tags, message, self) => {
               gameStatus = statusText.replace(statusReg, statusCH);
             }
             talkResult = `@${chanName}, ${gameStatus}  ${homeTeam} ${homeScore} ： ${awayTeam} ${awayScore} `;
-            talkSomething(talkResult);
-            return;
           }
         }
       }
-      talkResult = `@${chanName}, 今日${message_team_name}無比賽`;
-      talkSomething(talkResult);
+      if (count) {
+        canDo = false;
+        talkSomething(talkResult);
+      } else {
+        let homeTeam = NBA.find((v) => v.teamEN == team_code).teamCH;
+        canDo = false;
+        talkSomething(`@${chanName},  ${homeTeam} 今天沒有比賽！`);
+      }
     })();
   }
 
-  if (message.includes('!MLB')) {
+  if (containMLBTeam(message) && message.toLowerCase().includes("!mlb")) {
     (async () => {
-      if (!containMLBTeam(message)) {
-        return;
+      let teamId = MLB.find((v) => {
+        return v.teamCH.includes(message.split("!MLB ")[1].trim());
+      })?.teamId;
+      let MLB_info;
+      try {
+        MLB_info = await fetchMLB();
+      } catch (e) {
+        console.log(`fetchMLB error ${e}`);
       }
-      let teamId = MLB.find((v) =>
-        v.teamCH.includes(message.split("!MLB")[1].trim())
-      ).teamId;
-      let MLB_info = await fetchMLB();
       let games = MLB_info.dates[0].games;
       let talkResult = "";
+      let count = 0;
       for (let item of games) {
+        if (count) {
+          break;
+        }
         if (
           item.teams.home.team.id === teamId ||
           item.teams.away.team.id === teamId
         ) {
+          count++;
           let homeTeam = MLB.find(
             (v) => v.teamId === item.teams.home.team.id
           ).teamCH;
           let awayTeam = MLB.find(
             (v) => v.teamId === item.teams.away.team.id
           ).teamCH;
+          let gameDate = item;
           let homeScore = "";
           let awayScore = "";
           let currentInning = "";
@@ -297,7 +397,12 @@ client.on("message", (channel, tags, message, self) => {
             awayScore = item.teams.away.score;
           } else if (item.status.codedGameState === "I") {
             status = "比賽進行中";
-            let game_info = await fetchMLBGame(item.link);
+            let game_info;
+            try {
+              game_info = await fetchMLBGame(item.link);
+            } catch (e) {
+              console.log(`fetchMLBGame error ${e}`);
+            }
             currentInning = game_info.liveData.linescore.currentInning;
             homeScore = item.teams.home.score;
             awayScore = item.teams.away.score;
@@ -318,7 +423,11 @@ client.on("message", (channel, tags, message, self) => {
           } else if (item.status.codeGameState === "P") {
             status = "比賽即將開始";
           } else if (item.status.codedGameState === "S") {
-            let startDate = new Date(new Date(item.gameDate));
+            let startDate = new Date(
+              new Date(item.gameDate).toLocaleString("TW", {
+                timeZone: "Asia/Taipei",
+              })
+            );
             let hour =
               startDate.getHours() > 9
                 ? startDate.getHours()
@@ -330,83 +439,42 @@ client.on("message", (channel, tags, message, self) => {
             status = `比賽預計 ${hour}:${minutes} 開始`;
           }
 
-          let nowDate = new Date(
-            new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
-          );
-          let nowHour =
-            nowDate.getHours() > 9
-              ? nowDate.getHours()
-              : `0${nowDate.getHours()}`;
-          let nowMinutes =
-            nowDate.getMinutes() > 9
-              ? nowDate.getMinutes()
-              : `0${nowDate.getMinutes()}`;
-          let nowSeconds =
-            nowDate.getSeconds() > 9
-              ? nowDate.getSeconds()
-              : `0${nowDate.getSeconds()}`;
-          talkResult = `@${chanName}, ${nowHour}:${nowMinutes}:${nowSeconds} ${status}${currentInning} ${state} ${homeTeam} ${homeScore} : ${awayTeam} ${awayScore}`;
-          talkSomething(talkResult);
+          let nowTimes = nowDates();
+          talkResult = `@${chanName}, ${nowTimes.hour}:${nowTimes.min}:${nowTimes.sec} ${status}${currentInning} ${state} ${homeTeam} ${homeScore} : ${awayTeam} ${awayScore}`;
         }
+      }
+      if (count) {
+        canDo = false;
+        talkSomething(talkResult);
+      } else {
+        let homeTeam = MLB.find((v) => v.teamId === teamId).teamCH;
+        canDo = false;
+        talkSomething(`@${chanName},  ${homeTeam} 今天沒有比賽！`);
       }
     })();
   }
 
-  if (message.includes('!') && containCPBLTeam(message)) {
-    (async () => {
-      let date = new Date(
-        new Date().toLocaleString("TW", { timeZone: "Asia/Taipei" })
-      );
-      let month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
-      let days = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
-      let dateString = `${date.getFullYear()}-${month}-${days}`;
-      let talkResult = '';
-      let todayGames = GameData.GameData.filter(v => v.GameDate.match(dateString));
-      let teamName = message.replace('!', '');
-      for (let game of todayGames) {
-        if (game.VisitingTeamName.match(teamName) || game.HomeTeamName.match(teamName)) {
-          let form = {
-            GameSno: game.GameSno,
-            KindCode: game.KindCode,
-            Year: game.Year,
-            PrevOrNext: "",
-            PresentStatus: "",
-            SelectKindCode: game.KindCode,
-            SelectYear: date.getFullYear(),
-            SelectMonth: date.getMonth() + 1,
-          }
-          let gameLogs = await getGameInfo(form);
-
-          for (let gameLog of gameLogs.GameDetailJson) {
-            if (gameLog.GameSno === game.GameSno) {
-              if (gameLog.GameStatus == '1' || gameLog.GameStatus == '4' ||
-                gameLog.GameStatus == '5' || gameLog.GameStatus == '6') {
-                talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${DateToString(gameLog.GameDateTimeS)} ${gameLog.HomeTeamName} : ${gameLog.VisitingTeamName}`
-              } else {
-                let inningInfo = gameLogs.ScoreboardJson[0];
-                let UpDown = '';
-                if (gameLog.GameStatus != '3') {
-                  UpDown = inningInfo.TeamAbbr == gameLog.HomeTeamName ? `${inningInfo.InningSeq}局下半${inningInfo.TeamAbbr}進攻` : `${inningInfo.InningSeq}局上半${inningInfo.TeamAbbr}進攻`;
-                }
-                talkResult = `@${chanName}, ${gameLog.GameStatusChi} ${UpDown} ${gameLog.HomeTeamName} ${gameLog.HomeTotalScore} : ${gameLog.VisitingTotalScore} ${gameLog.VisitingTeamName}`
-              }
-              talkSomething(talkResult);
-              return;
-            }
-          }
-          talkResult = `@${chanName}, 今日${message}無比賽`;
-          talkSomething(talkResult);
-        }
-      }
-    })();
+  function nowDates() {
+    let parts = formatter.formatToParts(new Date());
+    let nowHour = parts.find((p) => p.type === "hour").value;
+    let nowMinutes = parts.find((p) => p.type === "minute").value;
+    let nowSeconds = parts.find((p) => p.type === "second").value;
+    return {
+      hour: nowHour,
+      min: nowMinutes,
+      sec: nowSeconds,
+    };
   }
 
-  function talkSomething(result) {
-    client.say(channel, result);
-    canDo = false;
-    setTimeout(function () {
-      canDo = true;
-    }, 1200);
+  async function talkSomething(result) {
+    try {
+      await client.say(channel, result);
+      setTimeout(function () {
+        canDo = true;
+      }, 1200);
+    } catch (error) {
+      console.error("Full error object:", error);
+    }
   }
 
   function containNBATeam(message) {
@@ -422,65 +490,65 @@ client.on("message", (channel, tags, message, self) => {
       message.includes("溜馬") ||
       message.includes("公鹿") ||
       message.includes("老鷹") ||
-      message.includes("黃蜂") ||
+      message.includes("鵜鶘") ||
       message.includes("熱火") ||
       message.includes("魔術") ||
       message.includes("巫師") ||
+      message.includes("獨行俠") ||
+      message.includes("灰熊") ||
+      message.includes("火箭") ||
+      message.includes("黃蜂") ||
+      message.includes("馬刺") ||
       message.includes("金塊") ||
       message.includes("灰狼") ||
-      message.includes("雷霆") ||
       message.includes("拓荒者") ||
+      message.includes("活塞") ||
       message.includes("爵士") ||
       message.includes("勇士") ||
       message.includes("快艇") ||
       message.includes("湖人") ||
       message.includes("太陽") ||
-      message.includes("國王") ||
-      message.includes("獨行俠") ||
-      message.includes("火箭") ||
-      message.includes("灰熊") ||
-      message.includes("鵜鶘") ||
-      message.includes("馬刺")
+      message.includes("國王")
     );
   }
 
   function containMLBTeam(message) {
     return (
-      message == "金鶯" ||
-      message == "紅襪" ||
-      message == "洋基" ||
-      message == "光芒" ||
-      message == "藍鳥" ||
-      message == "老虎" ||
-      message == "皇家" ||
-      message == "守護者" ||
-      message == "雙城" ||
-      message == "白襪" ||
-      message == "天使" ||
-      message == "太空人" ||
-      message == "運動家" ||
-      message == "水手" ||
-      message == "遊騎兵" ||
-      message == "大都會" ||
-      message == "國民" ||
-      message == "費城人" ||
-      message == "海盜" ||
-      message == "紅雀" ||
-      message == "釀酒人" ||
-      message == "響尾蛇" ||
-      message == "落磯" ||
-      message == "道奇" ||
-      message == "教士" ||
-      message == "巨人" ||
-      message == "小熊" ||
-      message == "紅人" ||
-      message == "馬林魚" ||
-      message == "勇士"
+      message.includes("金鶯") ||
+      message.includes("紅襪") ||
+      message.includes("洋基") ||
+      message.includes("光芒") ||
+      message.includes("藍鳥") ||
+      message.includes("老虎") ||
+      message.includes("皇家") ||
+      message.includes("守護者") ||
+      message.includes("雙城") ||
+      message.includes("白襪") ||
+      message.includes("天使") ||
+      message.includes("太空人") ||
+      message.includes("運動家") ||
+      message.includes("水手") ||
+      message.includes("遊騎兵") ||
+      message.includes("大都會") ||
+      message.includes("國民") ||
+      message.includes("費城人") ||
+      message.includes("海盜") ||
+      message.includes("紅雀") ||
+      message.includes("釀酒人") ||
+      message.includes("響尾蛇") ||
+      message.includes("落磯") ||
+      message.includes("道奇") ||
+      message.includes("教士") ||
+      message.includes("巨人") ||
+      message.includes("小熊") ||
+      message.includes("紅人") ||
+      message.includes("馬林魚") ||
+      message.includes("勇士")
     );
   }
 
   function containCPBLTeam(message) {
-    let teamC = message.replace('!', '');
+    let teamC = message.replace("!", "");
     for (let team of CPBL) {
       if (team.name.includes(teamC)) {
         return true;
@@ -491,10 +559,10 @@ client.on("message", (channel, tags, message, self) => {
 
   function DateToString(time) {
     let date = new Date(time);
-    let hour = date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`
-    let minute = date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`
-    let dateString = `${hour}:${minute}`
+    let hour = date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`;
+    let minute =
+      date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`;
+    let dateString = `${hour}:${minute}`;
     return dateString;
   }
-
 });
